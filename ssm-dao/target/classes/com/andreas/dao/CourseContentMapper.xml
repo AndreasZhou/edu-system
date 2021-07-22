@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.andreas.dao.CourseContentMapper">
+    <resultMap id="findSectionAndLessonResultMap" type="com.andreas.vo.CourseSectionVO">
+        <id property="id" column="id"/>
+        <result property="sectionName" column="section_name"/>
+        <result property="description" column="description"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="isDel" column="is_del"/>
+        <result property="orderNum" column="order_num"/>
+        <collection property="lessonVOList" ofType="com.andreas.vo.CourseLessonVO">
+            <id property="id" column="lessonId"/>
+            <result property="courseId" column="course_id"/>
+            <result property="sectionId" column="section_id"/>
+            <result property="theme" column="theme"/>
+            <result property="duration" column="duration"/>
+            <result property="isFree" column="is_free"/>
+            <result property="orderNum" column="order_num"/>
+            <result property="isDel" column="is_del"/>
+            <result property="status" column="status"/>
+        </collection>
+    </resultMap>
+    <!--根据课程ID查询课程内容（章节-课时）-->
+    <select id="findSectionAndLesson" parameterType="java.lang.Integer" resultMap="findSectionAndLessonResultMap">
+        select cs.*,
+               cl.id lessonid,
+               cl.course_id,
+               cl.section_id,
+               cl.theme,
+               cl.duration,
+               cl.create_time,
+               cl.update_time,
+               cl.is_del,
+               cl.order_num,
+               cl.status
+        from course_section cs
+                 left join course_lesson cl on cs.id = cl.session_id
+        where cs.course_id = #{courseId}
+        order by cs.order_num asc, cl.order_num asc
+    </select>
+    <update id="updateSectionStatus" parameterType="com.andreas.dto.CourseSectionDTO">
+        update course_session
+        <trim prefix="set" suffixOverrides=",">
+            <if test="dto.status != null and dto.status != ''">
+                status = #{dto.status}
+            </if>
+        </trim>
+        <where>
+            <if test="dto.id !=null and dto.id != '' ">id=#{dto.id}</if>
+        </where>
+    </update>
+    <insert id="saveSection" parameterType="com.andreas.dto.CourseSectionDTO">
+        insert into course_section (course_id,section_time,description,create_time,update_time,order_num)
+        values (
+                    #{dto.courseId},#{dto.sectionName},#{dto.description},#{dto.createTime},#{dto.updateTime},#{dto.orderNum}
+               )
+    </insert>
+    <update id="updateSection" parameterType="com.andreas.dto.CourseSectionDTO">
+        update course_session
+        <trim prefix="set" suffixOverrides=",">
+            <if test="dto.courseId">
+                course_id = #{dto.courseId},
+            </if>
+            <if test="dto.sectionName">
+                section_name = #{dto.sectionName},
+            </if>
+            <if test="dto.description">
+                description = #{dto.description},
+            </if>
+            <if test="dto.orderNum">
+                order_num = #{dto.orderNum},
+            </if>
+            <if test="dto.updateTime">
+                update_time = #{dto.updateTime}
+            </if>
+        </trim>
+        <where>
+            <if test="dto.id !=null and dto.id != '' ">id=#{dto.id}</if>
+        </where>
+    </update>
+
+    <update id="updateLesson" parameterType="com.andreas.dto.CourseLessonDTO">
+        update course_lesson
+        <trim prefix="set" suffixOverrides=",">
+            <if test="dto.courseId">
+                course_id = #{dto.courseId},
+            </if>
+            <if test="dto.sectionId">
+                section_id = #{dto.sectionId},
+            </if>
+            <if test="dto.theme">
+                theme = #{dto.theme},
+            </if>
+            <if test="dto.duration">
+                duration = #{dto.duration},
+            </if>
+            <if test="dto.isFree">
+                isFree = #{dto.isFree},
+            </if>
+            <if test="dto.orderNum">
+                orderNum = #{dto.orderNum}
+            </if>
+        </trim>
+        <where>
+            <if test="dto.id !=null and dto.id != '' ">id=#{dto.id}</if>
+        </where>
+    </update>
+
+    
+</mapper>

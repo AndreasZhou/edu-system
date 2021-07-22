@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.andreas.dao.CourseMapper">
+    <!--对test表进行查询操作-->
+    <select id="findCourseByCondition" resultType="com.andreas.domain.Course" parameterType="com.andreas.dto.CourseDTO">
+        select * from course
+        <where>
+            <if test="dto.courseName !=null and dto.courseName != ''">
+                and course_name like concat('%',#{dto.courseName},'%')
+            </if>
+            <if test="dto.status !=null and dto.status != ''">
+                and status = #{dto.status}
+            </if>
+            <if test="true">
+                and is_del != 1
+            </if>
+        </where>
+    </select>
+    <insert id="saveCourse" parameterType="com.andreas.domain.Course">
+        insert into course (
+            course_name,
+            brief,
+            preview_first_field,
+            preview_second_field,
+            course_img_url,
+            course_list_img,
+            sort_num,
+            price,
+            discounts,
+            sales,
+            discounts_tag,
+            course_description_mark_down,
+            create_time,
+            update_time
+        )
+        values (
+                   #{course.courseName},#{course.brief},#{course.previewFirstField},#{course.previewSecondField},#{course.courseImgUrl},
+                   #{course.courseListImg},#{course.sortNum},#{course.price},#{course.discounts},#{course.sales},#{course.discountsTag},#{course.courseDescriptionMarkDown},
+                   #{course.createTime},#{course.updateTime}
+               );
+        <!--获取添加成功记录返回的ID值赋值给Course实体中ID属性-->
+        <selectKey resultType="int" order="AFTER" keyProperty="id">
+            select LAST_INSERT_ID()
+        </selectKey>
+    </insert>
+    <insert id="saveTeacher" parameterType="com.andreas.domain.Teacher">
+        INSERT INTO teacher(
+            course_id,
+            teacher_name,
+            POSITION,
+            description,
+            create_time,
+            update_time
+        ) VALUES(#{teacher.courseId},#{teacher.teacherName},#{teacher.position},#{teacher.description},#{teacher.createTime},#{teacher.updateTime});
+    </insert>
+    <update id="updateCourse">
+        UPDATE course
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="course.courseName != null and course.courseName != ''">
+                course_name = #{course.courseName},
+            </if>
+
+            <if test="course.brief != null and course.brief != ''">
+                brief=#{course.brief},
+            </if>
+
+            <if test="course.previewFirstField != null and course.previewFirstField != ''">
+                preview_first_field=#{course.previewFirstField},
+            </if>
+
+            <if test="course.previewSecondField != null and course.previewSecondField != ''">
+                preview_second_field=#{course.previewSecondField},
+            </if>
+
+            <if test="course.courseImgUrl != null and course.courseImgUrl != ''">
+                course_img_url=#{course.courseImgUrl},
+            </if>
+
+            <if test="course.courseListImg != null and course.courseListImg != ''">
+                course_list_img=#{course.courseListImg},
+            </if>
+
+            <if test="course.sortNum != null and course.sortNum != ''">
+                sort_num=#{course.sortNum},
+            </if>
+
+            <if test="course.price != null and course.price != ''">
+                price=#{price},
+            </if>
+
+            <if test="course.discounts != null and course.discounts != ''">
+                discounts=#{discounts},
+            </if>
+
+            <if test="course.sales != null and course.sales != '' or course.sales==0">
+                sales=#{course.sales},
+            </if>
+
+            <if test="course.discountsTag != null and course.discountsTag != ''">
+                discounts_tag=#{course.discountsTag},
+            </if>
+
+            <if test="course.courseDescriptionMarkDown != null and course.courseDescriptionMarkDown != ''">
+                course_description_mark_down=#{course.courseDescriptionMarkDown},
+            </if>
+
+            <if test="course.updateTime != null">
+                update_time=#{course.updateTime},
+            </if>
+
+        </trim>
+
+        <where>
+            <if test="course.id!=null and course.id != '' ">id=#{course.id}</if>
+        </where>
+    </update>
+    <update id="updateTeacher">
+        UPDATE teacher
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="teacher.teacherName != null and teacher.teacherName != ''">
+                teacher_name = #{teacher.teacherName},
+            </if>
+
+            <if test="teacher.position != null and teacher.position != ''">
+                position = #{teacher.position},
+            </if>
+
+            <if test="teacher.description != null and teacher.description != ''">
+                description = #{teacher.description},
+            </if>
+
+            <if test="teacher.updateTime != null">
+                update_time=#{teacher.updateTime}
+            </if>
+        </trim>
+        <where>
+            <if test="teacher.courseId != null and teacher.courseId != '' ">course_id = #{teacher.courseId}</if>
+        </where>
+    </update>
+
+    <update id="updateCourseStatus">
+        update course
+        <trim prefix="set" suffixOverrides=",">
+            <if test="dto.status!=null and dto.status != '' ">
+                status = #{dto.status}
+            </if>
+        </trim>
+        <where>
+            <if test="course.id!=null and course.id != '' ">id=#{course.id}</if>
+        </where>
+    </update>
+
+    <select id="findCourseById" parameterType="java.lang.Integer" resultType="com.andreas.vo.CourseVO">
+        select  c.*,
+                t.teacher_name    teacher_name,
+                t.position        POSITION,
+                t.description     description
+               from course c left join teacher t on c.id = t.courseId where c.id = #{id};
+    </select>
+</mapper>
