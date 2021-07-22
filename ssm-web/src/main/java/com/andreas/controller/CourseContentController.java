@@ -21,20 +21,21 @@ import java.util.List;
 public class CourseContentController {
     @Autowired
     private CourseContentService courseContentService;
+
     /**
      * @Author: andreaszhou
      * @Description: 根据课程id查找对应的课程的章节和课程的信息
      * @DateTime: 2021/7/21 14:47
      * @Params: courseId
-     * @Return 
+     * @Return
      */
     @RequestMapping("/findSectionAndLesson")
-    public ResponseResult findSectionAndLesson(@RequestParam("id") Integer courseId){
-        if (courseId==null){
-            return new ResponseResult(false,300,"参数传递有误",null);
+    public ResponseResult findSectionAndLesson(@RequestParam("id") Integer courseId) {
+        if (courseId == null) {
+            return new ResponseResult(false, 300, "参数传递有误", null);
         }
         List<CourseSectionVO> courseSectionVOS = courseContentService.findSectionAndLesson(courseId);
-        ResponseResult responseResult = new ResponseResult(true,200,"响应成功",courseSectionVOS);
+        ResponseResult responseResult = new ResponseResult(true, 200, "响应成功", courseSectionVOS);
         return responseResult;
     }
 
@@ -46,12 +47,12 @@ public class CourseContentController {
      * @Return
      */
     @RequestMapping("/updateSectionStatus")
-    public ResponseResult updateSectionStatus(@RequestBody CourseSectionDTO dto){
-        if (dto.getId()==null){
-            return new ResponseResult(false,300,"参数传递有误",null);
+    public ResponseResult updateSectionStatus(@RequestBody CourseSectionDTO dto) {
+        if (dto.getId() == null) {
+            return new ResponseResult(false, 300, "参数传递有误", null);
         }
         courseContentService.updateSectionStatus(dto);
-        ResponseResult responseResult = new ResponseResult(true,200,"修改成功",null);
+        ResponseResult responseResult = new ResponseResult(true, 200, "修改成功", null);
         return responseResult;
     }
 
@@ -63,31 +64,31 @@ public class CourseContentController {
      * @Return
      */
     @RequestMapping("saveOrUpdateSection")
-    public ResponseResult saveOrUpdateSection(@RequestBody CourseSectionDTO dto){
-        if (dto.getId()!=null){
+    public ResponseResult saveOrUpdateSection(@RequestBody CourseSectionDTO dto) {
+        if (dto.getId() != null) {
             courseContentService.updateSection(dto);
-            return new ResponseResult(true,200,"修改成功",null);
-        }else {
+            return new ResponseResult(true, 200, "修改成功", null);
+        } else {
             courseContentService.saveSection(dto);
-            return new ResponseResult(true,200,"保存成功",null);
+            return new ResponseResult(true, 200, "保存成功", null);
         }
     }
-    
+
     /**
      * @Author: andreaszhou
      * @Description: TODO
      * @DateTime: 2021/7/21 21:29
      * @Params: 新建/修改课时信息
-     * @Return 
+     * @Return
      */
     @RequestMapping("/saveOrUpdateLesson")
-    public ResponseResult saveOrUpdateLesson(@RequestBody CourseLessonDTO dto){
-        if (dto.getId()!=null){
+    public ResponseResult saveOrUpdateLesson(@RequestBody CourseLessonDTO dto) {
+        if (dto.getId() != null) {
             courseContentService.updateLesson(dto);
-            return new ResponseResult(true,200,"修改成功",null);
-        }else {
+            return new ResponseResult(true, 200, "修改成功", null);
+        } else {
             courseContentService.saveLesson(dto);
-            return new ResponseResult(true,200,"保存成功",null);
+            return new ResponseResult(true, 200, "保存成功", null);
         }
     }
 }
