@@ -8,10 +8,8 @@ import com.andreas.service.CourseService;
 import com.andreas.vo.CourseVO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -25,6 +23,8 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public List<Course> findCourseByCondition(CourseDTO dto) {
+//        Page<Course> page = new Page<>();
+
         List<Course> courseList = courseMapper.findCourseByCondition(dto);
         return courseList;
     }

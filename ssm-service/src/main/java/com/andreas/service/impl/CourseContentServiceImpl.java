@@ -31,6 +31,13 @@ public class CourseContentServiceImpl implements CourseContentService {
         List<CourseSectionVO> courseSectionVOS= courseContentMapper.findSectionAndLesson(courseId);
         return courseSectionVOS;
     }
+    /**
+     * @Author: andreaszhou
+     * @Description: 更新章节状态
+     * @DateTime: 2021/7/22 14:15
+     * @Params:
+     * @Return
+     */
 
     @Override
     public void updateSectionStatus(CourseSectionDTO dto) {

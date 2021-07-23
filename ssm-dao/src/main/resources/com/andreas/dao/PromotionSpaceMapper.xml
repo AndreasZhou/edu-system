@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.andreas.dao.PromotionSpaceMapper">
+    <select id="findAllPromotionSpace" resultType="com.andreas.vo.PromotionSpaceVO">
+        select *
+        from promotion_space;
+    </select>
+    <update id="updatePromotionSpace">
+        update promotion_space
+        <trim prefix="set" suffixOverrides=",">
+            <if test="dto.name != null and dto.name == ''">
+                name = #{dto.name}
+            </if>
+        </trim>
+        <where>
+            <if test="dto.id != null and dto.id == ''">
+                id = #{dto.id}
+            </if>
+        </where>
+    </update>
+    <insert id="savePromotionSpace">
+        insert into promotion_space (name, spaceKey, createTime, updateTime, isDel)
+        values (#{dto.name}, #{dto.spaceKey}, #{dto.createTime}, #{dto.updateTime}, #{dto.isDel})
+    </insert>
+    <select id="findPromotionSpaceById" parameterType="java.lang.Integer" resultType="com.andreas.domain.PromotionSpace">
+        select *
+        from promotion_space;
+    </select>
+</mapper>

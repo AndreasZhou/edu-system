@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.andreas.dao.PromotionAdMapper">
+    <select id="findAllPromotionAdByPage" parameterType="com.andreas.dto.PromotionAdPageInfoDTO"
+            resultType="com.andreas.domain.PromotionAd">
+        select *
+        from promotion_ad;
+    </select>
+    <update id="updatePromotionAd" parameterType="com.andreas.dto.PromotionAdDTO">
+        update promotion_ad
+        <trim prefix="set" suffixOverrides=",">
+            <if test="dto.name != null and dto.name != '' ">
+                name = #{dto.name},
+            </if>
+            <if test="dto.spaceId != null and dto.spaceId != '' ">
+                spaceId = #{dto.spaceId},
+            </if>
+            <if test="dto.startTime != null and dto.startTime != '' ">
+                startTime = #{dto.startTime},
+            </if>
+            <if test="dto.endTime != null and dto.status != '' ">
+                endTime = #{dto.endTime},
+            </if>
+            <if test="dto.updateTime != null and dto.updateTime != '' ">
+                updateTime = #{dto.updateTime},
+            </if>
+            <if test="dto.status != null and dto.status != '' ">
+                status = #{dto.status},
+            </if>
+            <if test="dto.img != null and dto.img = '' ">
+                img = #{dto.img},
+            </if>
+            <if test="dto.link != null and dto.link != '' ">
+                link = #{dto.link},
+            </if>
+            <if test="dto.text != null and dto.text != '' ">
+                text = #{dto.text}
+            </if>
+        </trim>
+    </update>
+    <insert id="savePromotionAd" parameterType="com.andreas.dto.PromotionAdDTO">
+        insert into promotion_ad (name, spaceId, startTime, endTime, createTime, updateTime, status, img, link, text)
+        values (#{dto.name}, #{dto.spaceId}, #{dto.startTime}, #{dto.endTime}, #{dto.createTime}, #{dto.updateTime},
+                #{dto.status}, #{dto.img}, #{dto.link},
+                #{dto.text})
+    </insert>
+    <select id="findPromotionAdById" resultType="com.andreas.domain.PromotionAd">
+        select *
+        from promotion_ad
+        where id = #{id};
+    </select>
+    <update id="updatePromotionAdStatus" parameterType="com.andreas.dto.PromotionAdDTO">
+        update promotion_ad
+        <trim prefix="set" suffixOverrides=",">
+            <if test="dto.status != null and dto.status != '' ">
+                status = #{dto.status}
+            </if>
+        </trim>
+        <where>
+            <if test="dto.id != null and dto.id != '' ">
+                id = #{dto.id}
+            </if>
+        </where>
+    </update>
+</mapper>
