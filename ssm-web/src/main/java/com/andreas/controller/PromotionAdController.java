@@ -27,6 +27,7 @@ import java.util.Map;
 public class PromotionAdController {
     @Autowired
     private PromotionAdService promotionAdService;
+
     /**
      * @Author: andreaszhou
      * @Description: 分页获取广告列表数据
@@ -35,17 +36,18 @@ public class PromotionAdController {
      * @Return
      */
     @RequestMapping("findAllPromotionAdByPage")
-    public ResponseResult findAllPromotionAdByPage(@RequestBody PromotionAdPageInfoDTO dto){
+    public ResponseResult findAllPromotionAdByPage(@RequestBody PromotionAdPageInfoDTO dto) {
         PageInfo<PromotionAd> promotionAdPageInfo = promotionAdService.findAllPromotionAdByPage(dto);
-        ResponseResult responseResult = new ResponseResult(true,200,"响应成功",promotionAdPageInfo);
+        ResponseResult responseResult = new ResponseResult(true, 200, "响应成功", promotionAdPageInfo);
         return responseResult;
     }
+
     /**
      * @Author: andreaszhou
      * @Description: TODO
      * @DateTime: 2021/7/23 11:18
-     * @Params: 
-     * @Return 
+     * @Params:
+     * @Return
      */
     @RequestMapping("PromotionAdUpload")
     public ResponseResult promotionAdUpload(@RequestParam("file") MultipartFile file, HttpServletRequest request) throws IOException {
@@ -66,38 +68,39 @@ public class PromotionAdController {
         ResponseResult responseResult = new ResponseResult(true, 200, "图片上传成功", map);
         return responseResult;
     }
+
     /**
      * @Author: andreaszhou
      * @Description: 新建&修改广告位
      * @DateTime: 2021/7/23 11:38
-     * @Params: 
-     * @Return 
+     * @Params:
+     * @Return
      */
     @RequestMapping("saveOrUpdatePromotionAd")
-    public ResponseResult saveOrUpdatePromotionAd (@RequestBody PromotionAdDTO dto){
-        if (dto.getId()!=null){
+    public ResponseResult saveOrUpdatePromotionAd(@RequestBody PromotionAdDTO dto) {
+        if (dto.getId() != null) {
             promotionAdService.updatePromotionAd(dto);
-            ResponseResult responseResult = new ResponseResult(true,200,"修改成功",null);
+            ResponseResult responseResult = new ResponseResult(true, 200, "修改成功", null);
             return responseResult;
-        }else {
+        } else {
             promotionAdService.savePromotionAd(dto);
-            ResponseResult responseResult = new ResponseResult(true,200,"保存成功",null);
+            ResponseResult responseResult = new ResponseResult(true, 200, "保存成功", null);
             return responseResult;
         }
     }
 
     /**
      * @Author: andreaszhou
-     * @Description: 接收广告ID,返回广告详细信息
+     * @Description: 接收广告ID, 返回广告详细信息
      * @DateTime: 2021/7/23 14:37
      * @Params:
      * @Return
      */
     @RequestMapping("findPromotionAdById")
-    public ResponseResult findPromotionAdById(@RequestParam("id") Integer id){
-         PromotionAd promotionAd = promotionAdService.findPromotionAdById(id);
-         ResponseResult responseResult = new ResponseResult(true,200,"响应成功",promotionAd);
-         return responseResult;
+    public ResponseResult findPromotionAdById(@RequestParam("id") Integer id) {
+        PromotionAd promotionAd = promotionAdService.findPromotionAdById(id);
+        ResponseResult responseResult = new ResponseResult(true, 200, "响应成功", promotionAd);
+        return responseResult;
     }
 
     /**
@@ -108,9 +111,9 @@ public class PromotionAdController {
      * @Return
      */
     @RequestMapping("findPromotionAdById")
-    public ResponseResult updatePromotionAdStatus(@RequestBody PromotionAdDTO dto){
+    public ResponseResult updatePromotionAdStatus(@RequestBody PromotionAdDTO dto) {
         promotionAdService.updatePromotionAdStatus(dto);
-        ResponseResult responseResult = new ResponseResult(true,200,"修改成功",null);
+        ResponseResult responseResult = new ResponseResult(true, 200, "修改成功", null);
         return responseResult;
     }
 
