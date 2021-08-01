@@ -2,6 +2,7 @@ package com.andreas.service;
 
 import com.andreas.domain.User;
 import com.andreas.dto.UserDTO;
+import com.andreas.vo.UserVO;
 import com.github.pagehelper.PageInfo;
 
 /**
@@ -16,6 +17,7 @@ public interface UserService {
      * @Return
      */
     PageInfo<User> findAllUserByPage(UserDTO dto);
+
     /**
      * @Author: andreaszhou
      * @Description: 修改用户状态
@@ -24,4 +26,13 @@ public interface UserService {
      * @Return
      */
     void updateUserStatus(Integer id, Integer status);
+
+    /**
+     * @Author: andreaszhou
+     * @Description: 用户登录
+     * @DateTime: 2021/8/1 17:11
+     * @Params:
+     * @Return
+     */
+    UserVO login(UserDTO dto);
 }

@@ -1,5 +1,8 @@
 package com.andreas.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.util.Date;
 
 public class User {
@@ -27,8 +30,10 @@ public class User {
     // 是否删除
     private Integer is_del;
     // 创建时间
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date create_time;
     // 更新时间
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date update_time;
 
     public Integer getId() {
@@ -119,6 +124,8 @@ public class User {
         this.is_del = is_del;
     }
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     public Date getCreate_time() {
         return create_time;
     }
@@ -127,6 +134,8 @@ public class User {
         this.create_time = create_time;
     }
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     public Date getUpdate_time() {
         return update_time;
     }

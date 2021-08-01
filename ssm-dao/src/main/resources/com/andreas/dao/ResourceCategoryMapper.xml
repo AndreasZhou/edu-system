@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.andreas.dao.ResourceCategoryMapper">
+
+    <select id="findAllResourceCategory" resultType="com.andreas.vo.ResourceCategoryVO">
+        select *
+        from resource_category;
+    </select>
+    <update id="updateResourceCategory" parameterType="com.andreas.domain.ResourceCategory">
+        update resource_category
+        <trim prefix="set" suffixOverrides=",">
+            <if test="resourceCategory.name != null and resourceCategory.name != ''">
+                name = #{resourceCategory.name},
+            </if>
+            <if test="resourceCategory.sort != null and resourceCategory.sort != ''">
+                sort = #{resourceCategory.sort},
+            </if>
+            <if test="resourceCategory.updatedTime != null">
+                updated_time = #{resourceCategory.updatedTime},
+            </if>
+            <if test="resourceCategory.updatedBy != null and resourceCategory.updatedBy != '' ">
+                updated_by = #{resourceCategory.updatedBy}
+            </if>
+        </trim>
+        <where>
+            <if test="resourceCategory.id != null and resourceCategory.id != '' ">
+                id = #{resourceCategory.id}
+            </if>
+        </where>
+    </update>
+
+    <insert id="savaResourceCategory" parameterType="com.andreas.domain.ResourceCategory">
+        insert into resource_category (`name`, sort, created_time, updated_time, created_by, updated_by)
+        values (#{resourceCategory.name}, #{resourceCategory.sort}, #{resourceCategory.createdTime},
+                #{resourceCategory.updatedTime}, #{resourceCategory.createdBy}, #{resourceCategory.updatedBy})
+    </insert>
+
+    <delete id="deleteResourceCategory" parameterType="java.lang.Integer">
+        delete
+        from resource_category
+        where id = #{id}
+    </delete>
+
+    <select id="showResourceCategoryById" parameterType="java.lang.Integer"
+            resultType="com.andreas.domain.ResourceCategory">
+        select *
+        from resource_category
+        where id = #{id};
+    </select>
+</mapper>

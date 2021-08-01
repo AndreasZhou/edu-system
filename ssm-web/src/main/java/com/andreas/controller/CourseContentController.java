@@ -5,6 +5,7 @@ import com.andreas.dto.CourseLessonDTO;
 import com.andreas.dto.CourseSectionDTO;
 import com.andreas.service.CourseContentService;
 import com.andreas.vo.CourseSectionVO;
+import com.andreas.vo.CourseVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,8 +36,7 @@ public class CourseContentController {
             return new ResponseResult(false, 300, "参数传递有误", null);
         }
         List<CourseSectionVO> courseSectionVOS = courseContentService.findSectionAndLesson(courseId);
-        ResponseResult responseResult = new ResponseResult(true, 200, "响应成功", courseSectionVOS);
-        return responseResult;
+        return new ResponseResult(true, 200, "响应成功", courseSectionVOS);
     }
 
     /**
@@ -52,8 +52,20 @@ public class CourseContentController {
             return new ResponseResult(false, 300, "参数传递有误", null);
         }
         courseContentService.updateSectionStatus(dto);
-        ResponseResult responseResult = new ResponseResult(true, 200, "修改成功", null);
-        return responseResult;
+        return new ResponseResult(true, 200, "修改成功", null);
+    }
+
+    /**
+     * @Author: andreaszhou
+     * @Description: 回显章节对应的课程信息，回显章节对应的课程信息
+     * @DateTime: 2021/7/28 18:46
+     * @Params: courseId
+     * @Return responseResult
+     */
+    @RequestMapping("findCourseById")
+    public ResponseResult findCourseById(@RequestParam("courseId") Integer courseId) {
+        CourseVO courseVO = courseContentService.findCourseById(courseId);
+        return new ResponseResult(true, 200, "响应成功", courseVO);
     }
 
     /**
@@ -61,7 +73,7 @@ public class CourseContentController {
      * @Description: 新建&修改章节信息
      * @DateTime: 2021/7/21 21:33
      * @Params: dto
-     * @Return
+     * @Return ResponseResult
      */
     @RequestMapping("saveOrUpdateSection")
     public ResponseResult saveOrUpdateSection(@RequestBody CourseSectionDTO dto) {

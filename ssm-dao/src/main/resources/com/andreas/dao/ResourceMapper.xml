@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.andreas.dao.ResourceMapper">
+    <!--新建资源-->
+    <insert id="saveResource" parameterType="com.andreas.domain.Resource">
+        insert into resource (`name`, url, category_id, description, created_time, updated_time, created_by, updated_by)
+        values (#{resource.name}, #{resource.url}, #{resource.categoryId}, #{resource.description},
+                #{resource.createdTime}, #{resource.updatedTime}, #{resource.createdBy}, #{resource.updatedBy});
+    </insert>
+    <update id="updateResource">
+        update resource
+        <trim prefix="set" suffixOverrides=",">
+            <if test="resource.name != null and resource.name != ''">
+                name = #{resource.name},
+            </if>
+            <if test="resource.url != null and resource.url != ''">
+                url = #{resource.url},
+            </if>
+            <if test="resource.categoryId != null and resource.categoryId != ''">
+                category_id = #{resource.categoryId},
+            </if>
+            <if test="resource.description != null and resource.description != ''">
+                description = #{resource.description},
+            </if>
+            <if test="resource.updatedTime != null">
+                updated_time = #{resource.updatedTime},
+            </if>
+            <if test="resource.updatedBy != null and resource.updatedBy != ''">
+                updated_by = #{resource.updatedBy}
+            </if>
+        </trim>
+        <where>
+            <if test="resource.id != null and resource.id != ''">
+                id = #{resource.id}
+            </if>
+        </where>
+    </update>
+    <delete id="deleteResource">
+        delete
+        from resource
+        where id = #{id};
+    </delete>
+
+    <select id="findAllResource" resultType="com.andreas.vo.ResourceVO">
+        select *
+        from resource
+        <where>
+            <if test="resourcePageQuery.name != null and resourcePageQuery.name != ''">
+                `name` = #{resourcePageQuery.name}
+            </if>
+            <if test="resourcePageQuery.categoryId != null and resourcePageQuery.categoryId != ''">
+                AND category_id = #{resourcePageQuery.categoryId}
+            </if>
+            <if test="resourcePageQuery.url != null and resourcePageQuery.url != ''">
+                AND url = #{resourcePageQuery.url}
+            </if>
+        </where>
+    </select>
+
+    <select id="showResourceById" parameterType="java.lang.Integer" resultType="com.andreas.domain.Resource">
+        SELECT * FROM resource
+        <where>
+            <if test="id != null and id != ''">
+                id = #{id}
+            </if>
+        </where>
+    </select>
+
+    <update id="deleteResourceCategoryId" parameterType="java.lang.Integer">
+        update resource set category_id = null
+        <where>
+            <if test="id != null and id != ''">
+                category_id = #{id}
+            </if>
+        </where>
+    </update>
+</mapper>

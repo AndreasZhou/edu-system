@@ -1,5 +1,8 @@
 package com.andreas.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.util.Date;
 
 public class ResourceCategory {
@@ -7,7 +10,9 @@ public class ResourceCategory {
     private Integer id;
     private String name;
     private Integer sort;
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createdTime;
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updatedTime;
     private String createdBy;
     private String updatedBy;
@@ -36,6 +41,8 @@ public class ResourceCategory {
         this.sort = sort;
     }
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     public Date getCreatedTime() {
         return createdTime;
     }
@@ -44,6 +51,8 @@ public class ResourceCategory {
         this.createdTime = createdTime;
     }
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     public Date getUpdatedTime() {
         return updatedTime;
     }

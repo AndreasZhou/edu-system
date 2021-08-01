@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.andreas.dao.UserMapper">
+
+    <select id="findAllUserByPage" resultType="com.andreas.domain.User">
+        select *
+        from USER
+        <if test="true">
+            and is_del !=1
+        </if>
+        <if test="dto.username !=null and dto.username !=''">
+            and name = #{dto.username}
+        </if>
+        <if test="dto.startCreateTime != null and dto.endCreateTime != null">
+            and create_time BETWEEN #{dto.startCreateTime} AND #{dto.endCreateTime}
+        </if>
+    </select>
+
+    <update id="updateUserStatus">
+        update user
+        <trim prefix="set" suffixOverrides=",">
+            <if test="status != null and status != '' ">
+                status = #{status}
+            </if>
+        </trim>
+        <where>
+            <if test="id">
+                id = #{id}
+            </if>
+        </where>
+    </update>
+</mapper>

@@ -1,8 +1,10 @@
 package com.andreas.dao;
 
 import com.andreas.domain.Course;
+import com.andreas.domain.CoursePageQuery;
 import com.andreas.domain.Teacher;
 import com.andreas.dto.CourseDTO;
+import com.andreas.dto.CoursePageQueryDTO;
 import com.andreas.vo.CourseVO;
 import org.apache.ibatis.annotations.Param;
 
@@ -19,7 +21,8 @@ public interface CourseMapper {
      * @Params: dto
      * @Return
      */
-    List<Course> findCourseByCondition(@Param("dto") CourseDTO dto);
+    List<Course> findCourseByCondition(@Param("coursePageQuery") CoursePageQuery coursePageQuery);
+
     /**
      * @Author: andreaszhou
      * @Description: 保存课程信息
@@ -28,6 +31,7 @@ public interface CourseMapper {
      * @Return
      */
     void saveCourse(@Param("course") Course course);
+
     /**
      * @Author: andreaszhou
      * @Description: 保存教师信息
@@ -36,6 +40,7 @@ public interface CourseMapper {
      * @Return
      */
     void saveTeacher(@Param("teacher") Teacher teacher);
+
     /**
      * @Author: andreaszhou
      * @Description: 更新课程信息
@@ -44,6 +49,7 @@ public interface CourseMapper {
      * @Return
      */
     void updateCourse(@Param("course") Course course);
+
     /**
      * @Author: andreaszhou
      * @Description: 更新教师信息
@@ -52,6 +58,7 @@ public interface CourseMapper {
      * @Return
      */
     void updateTeacher(@Param("teacher") Teacher teacher);
+
     /**
      * @Author: andreaszhou
      * @Description: 修改课程转态
@@ -59,7 +66,14 @@ public interface CourseMapper {
      * @Params: dto
      * @Return
      */
-    void updateCourseStatus(@Param("dto") CourseDTO dto);
+    void updateCourseStatus(@Param("course") Course course);
 
-    CourseVO findCourseById(@Param("id") Integer id);
+    /**
+     * @Author: andreaszhou
+     * @Description: 通过id查询课程信息，回显
+     * @DateTime: 2021/7/21 14:18
+     * @Params: id
+     * @Return CourseVO
+     */
+    Course findCourseById(@Param("id") Integer id);
 }

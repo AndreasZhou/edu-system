@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.andreas.dao.MenuMapper">
+
+    <resultMap id="menuResult" type="com.andreas.domain.Menu">
+        <id column="id" property="id"/>
+        <result column="href" property="href"/>
+        <result column="icon" property="icon"/>
+        <result column="name" property="name"/>
+        <result column="parent_id" property="parentId"/>
+        <result column="description" property="description"/>
+        <result column="orderNum" property="orderNum"/>
+        <result column="shown" property="shown"/>
+        <result column="created_time" property="createdTime"/>
+        <result column="updated_time" property="updatedTime"/>
+        <result column="created_by" property="createdBy"/>
+        <result column="updated_by" property="updatedBy"/>
+        <collection property="subMenuList" column="id" select="findSubMenuListByPid" ofType="com.andreas.vo.MenuVO"/>
+
+    </resultMap>
+
+    <!--根据Id查询所有的子菜单-->
+    <select id="findSubMenuListByPid" resultMap="menuResult" parameterType="java.lang.Integer">
+        select *
+        from menu
+        where parent_id = #{id};
+    </select>
+
+    <!--保存菜单-->
+    <insert id="saveMenu" parameterType="com.andreas.domain.Menu">
+        insert into menu (description, href, icon, `name`, order_num, parent_id, shown, `level`,
+                          created_time, updated_time, created_by, updated_by)
+        values (#{menu.description}, #{menu.href}, #{menu.icon}, #{menu.name}, #{menu.orderNum},
+                #{menu.parentId}, #{menu.shown}, #{menu.level}, #{menu.createdTime}, #{menu.updatedTime},
+                #{menu.createdBy}, #{menu.updatedBy});
+
+    </insert>
+    <!--修改菜单-->
+    <update id="updateMenu" parameterType="com.andreas.domain.Menu">
+        update menu
+        <trim prefix="set" suffixOverrides=",">
+            <if test="menu.description != null and menu.description != '' ">
+                description = #{menu.description},
+            </if>
+            <if test="menu.href != null and menu.href != '' ">
+                href = #{menu.href},
+            </if>
+            <if test="menu.icon != null and menu.icon != '' ">
+                icon = #{menu.icon},
+            </if>
+            <if test="menu.name != null and menu.name != ''">
+                `name` = #{menu.name},
+            </if>
+            <if test="menu.orderNum != null and menu.orderNum != ''">
+                order_num = #{menu.orderNum},
+            </if>
+            <if test="menu.parentId != null and menu.parentId != ''">
+                parent_id = #{menu.parentId},
+            </if>
+            <if test="menu.shown != null and menu.shown != ''">
+                shown = #{menu.shown},
+            </if>
+<!--            <if test="menu.level != null and menu.level != ''">-->
+<!--                level = #{menu.level},-->
+<!--            </if>-->
+            <if test="menu.updatedTime != null">
+                updated_time = #{menu.updatedTime},
+            </if>
+            <if test="menu.updatedBy != null and menu.updatedBy != ''">
+                updated_by = #{menu.updatedBy},
+            </if>
+        </trim>
+        <where>
+            <if test="menu.id != null and menu.id != ''">
+                id = #{menu.id}
+            </if>
+        </where>
+    </update>
+
+    <!--查找所有的菜单-->
+    <select id="findAllMenu" resultType="com.andreas.domain.Menu">
+        select *
+        from menu
+    </select>
+    <!--通过ID查找菜单-->
+    <select id="findMenuById" resultType="com.andreas.domain.Menu">
+        select *
+        from menu
+        where id = #{id};
+    </select>
+
+    <delete id="deleteMenu" parameterType="java.lang.Integer">
+        delete
+        from menu
+        where id = #{id}
+    </delete>
+</mapper>

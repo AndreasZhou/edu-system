@@ -1,7 +1,9 @@
 package com.andreas.domain;
 
-public class ResourseVo {
-
+/**
+ * 描述：ResourcePageQuery 类
+ */
+public class ResourcePageQuery {
     private Integer currentPage;
     private Integer pageSize;
     private String name;

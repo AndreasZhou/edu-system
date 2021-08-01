@@ -7,6 +7,7 @@ import com.andreas.service.PromotionSpaceService;
 import com.andreas.vo.PromotionSpaceVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -19,6 +20,7 @@ import java.util.UUID;
 public class PromotionSpaceServiceImpl implements PromotionSpaceService {
     @Autowired
     private PromotionSpaceMapper promotionSpaceMapper;
+
     /**
      * @Author: andreaszhou
      * @Description: 查询广告位列表
@@ -39,6 +41,7 @@ public class PromotionSpaceServiceImpl implements PromotionSpaceService {
      * @Return
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void updatePromotionSpace(PromotionSpaceDTO dto) {
         // 封装数据
         Date date = new Date();
@@ -46,6 +49,7 @@ public class PromotionSpaceServiceImpl implements PromotionSpaceService {
         // 调用mapper
         promotionSpaceMapper.updatePromotionSpace(dto);
     }
+
     /**
      * @Author: andreaszhou
      * @Description: 添加广告位
@@ -54,6 +58,7 @@ public class PromotionSpaceServiceImpl implements PromotionSpaceService {
      * @Return
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void savePromotionSpace(PromotionSpaceDTO dto) {
         // 封装数据
         dto.setSpaceKey(UUID.randomUUID().toString());
@@ -64,6 +69,7 @@ public class PromotionSpaceServiceImpl implements PromotionSpaceService {
         // 调用mapper
         promotionSpaceMapper.savePromotionSpace(dto);
     }
+
     /**
      * @Author: andreaszhou
      * @Description: 修改操作，回显广告位

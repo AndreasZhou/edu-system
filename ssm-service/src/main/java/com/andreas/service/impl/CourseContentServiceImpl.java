@@ -2,23 +2,30 @@ package com.andreas.service.impl;
 
 import com.andreas.dao.CourseContentMapper;
 import com.andreas.domain.Course;
+import com.andreas.domain.CourseLesson;
+import com.andreas.domain.CourseSection;
 import com.andreas.dto.CourseLessonDTO;
 import com.andreas.dto.CourseSectionDTO;
 import com.andreas.service.CourseContentService;
 import com.andreas.vo.CourseSectionVO;
+import com.andreas.vo.CourseVO;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 /**
- * 描述：
+ * 描述：CourseContentServiceImpl实现类
  */
 @Service
 public class CourseContentServiceImpl implements CourseContentService {
     @Autowired
     private CourseContentMapper courseContentMapper;
+
     /**
      * @Author: andreaszhou
      * @Description: 查询课程的章节和对应的课程信息
@@ -28,22 +35,30 @@ public class CourseContentServiceImpl implements CourseContentService {
      */
     @Override
     public List<CourseSectionVO> findSectionAndLesson(Integer courseId) {
-        List<CourseSectionVO> courseSectionVOS= courseContentMapper.findSectionAndLesson(courseId);
+        List<CourseSection> sectionAndLesson = courseContentMapper.findSectionAndLesson(courseId);
+        List<CourseSectionVO> courseSectionVOS = new ArrayList<>();
+        for (CourseSection courseSection : sectionAndLesson) {
+            CourseSectionVO courseSectionVO = new CourseSectionVO();
+            BeanUtils.copyProperties(courseSection, courseSectionVO);
+        }
         return courseSectionVOS;
     }
+
     /**
      * @Author: andreaszhou
-     * @Description: 更新章节状态
-     * @DateTime: 2021/7/22 14:15
-     * @Params:
+     * @Description: 更新章节的状态
+     * @DateTime: 2021/7/21 16:41
+     * @Params: dto
      * @Return
      */
-
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void updateSectionStatus(CourseSectionDTO dto) {
+        CourseSection courseSection = new CourseSection();
+        BeanUtils.copyProperties(dto, courseSection);
         Date date = new Date();
-        dto.setUpdateTime(date);
-        courseContentMapper.updateSectionStatus(dto);
+        courseSection.setUpdateTime(date);
+        courseContentMapper.updateSectionStatus(courseSection);
     }
 
     /**
@@ -54,10 +69,13 @@ public class CourseContentServiceImpl implements CourseContentService {
      * @Return
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void updateSection(CourseSectionDTO dto) {
+        CourseSection courseSection = new CourseSection();
+        BeanUtils.copyProperties(dto, courseSection);
         Date date = new Date();
-        dto.setUpdateTime(date);
-        courseContentMapper.updateSection(dto);
+        courseSection.setUpdateTime(date);
+        courseContentMapper.updateSection(courseSection);
     }
 
     /**
@@ -68,12 +86,16 @@ public class CourseContentServiceImpl implements CourseContentService {
      * @Return
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void saveSection(CourseSectionDTO dto) {
+        CourseSection courseSection = new CourseSection();
+        BeanUtils.copyProperties(dto, courseSection);
         Date date = new Date();
-        dto.setCreateTime(date);
-        dto.setUpdateTime(date);
-        courseContentMapper.saveSection(dto);
+        courseSection.setCreateTime(date);
+        courseSection.setUpdateTime(date);
+        courseContentMapper.saveSection(courseSection);
     }
+
     /**
      * @Author: andreaszhou
      * @Description: 修改课时信息
@@ -82,11 +104,15 @@ public class CourseContentServiceImpl implements CourseContentService {
      * @Return
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void updateLesson(CourseLessonDTO dto) {
+        CourseLesson courseLesson = new CourseLesson();
+        BeanUtils.copyProperties(dto, courseLesson);
         Date date = new Date();
-        dto.setUpdateTime(date);
-        courseContentMapper.updateLesson(dto);
+        courseLesson.setUpdateTime(date);
+        courseContentMapper.updateLesson(courseLesson);
     }
+
     /**
      * @Author: andreaszhou
      * @Description: 保存课时信息
@@ -95,10 +121,28 @@ public class CourseContentServiceImpl implements CourseContentService {
      * @Return
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void saveLesson(CourseLessonDTO dto) {
+        CourseLesson courseLesson = new CourseLesson();
+        BeanUtils.copyProperties(dto, courseLesson);
         Date date = new Date();
-        dto.setUpdateTime(date);
-        dto.setCreateTime(date);
-        courseContentMapper.saveLesson(dto);
+        courseLesson.setUpdateTime(date);
+        courseLesson.setCreateTime(date);
+        courseContentMapper.saveLesson(courseLesson);
+    }
+
+    /**
+     * @Author: andreaszhou
+     * @Description: 回显章节对应的课程信息
+     * @DateTime: 2021/7/28 18:46
+     * @Params: courseId
+     * @Return CourseVO
+     */
+    @Override
+    public CourseVO findCourseById(Integer courseId) {
+        CourseVO courseVO = new CourseVO();
+        Course course = courseContentMapper.findCourseById(courseId);
+        BeanUtils.copyProperties(course, courseVO);
+        return courseVO;
     }
 }

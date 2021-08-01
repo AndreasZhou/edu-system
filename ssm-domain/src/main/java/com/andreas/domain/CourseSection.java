@@ -27,7 +27,7 @@ public class CourseSection {
     private Date updateTime;
 
     //是否删除
-    private int isDe;
+    private int isDel;
 
     //排序
     private int orderNum;
@@ -94,12 +94,12 @@ public class CourseSection {
         this.updateTime = updateTime;
     }
 
-    public int getIsDe() {
-        return isDe;
+    public int getIsDel() {
+        return isDel;
     }
 
-    public void setIsDe(int isDe) {
-        this.isDe = isDe;
+    public void setIsDel(int isDe) {
+        this.isDel = isDe;
     }
 
     public int getOrderNum() {

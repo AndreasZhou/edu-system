@@ -30,4 +30,9 @@
             </if>
         </where>
     </update>
+    <select id="login" resultType="com.andreas.vo.UserVO" parameterType="com.andreas.domain.User">
+        select *
+        from user
+        where phone = #{user.phone}
+    </select>
 </mapper>

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.andreas.dao.RoleMapper">
+    <!--保存角色-->
+    <insert id="saveRole" parameterType="com.andreas.domain.Role">
+        insert into roles (code, name, description, created_time, updated_time, created_by, updated_by)
+        values (#{role.code}, #{role.name}, #{role.description}, #{role.createdTime}, #{role.updatedTime},
+                #{role.createdBy},
+                #{role.updatedBy});
+    </insert>
+
+    <!--为角色分配菜单-->
+    <insert id="roleContextMenu" parameterType="com.andreas.domain.Role_menu_relation">
+        insert into role_menu_relation
+        values (null, #{role_menu_relation.menuId}, #{role_menu_relation.roleId}, #{role_menu_relation.createdTime},
+                #{role_menu_relation.updatedTime}, #{role_menu_relation.createdBy}, #{role_menu_relation.updatedby})
+    </insert>
+
+    <!--更新角色-->
+    <update id="updateRole" parameterType="com.andreas.domain.Role">
+        update roles
+        <trim prefix="set" suffixOverrides=",">
+            <if test="role.name != null and role.name != ''">
+                name = #{role.name},
+            </if>
+            <if test="role.code != null and role.code != '' ">
+                code = #{role.code},
+            </if>
+            <if test="role.description != null and role.description != '' ">
+                description = #{role.description},
+            </if>
+            <if test="role.updatedTime != null">
+                updated_time = #{role.updatedTime},
+            </if>
+            <if test="role.updatedBy != null and role.updatedBy != '' ">
+                updated_by = #{role.updatedBy}
+            </if>
+        </trim>
+        <where>
+            <if test="role.id != null and role.id != '' ">
+                id = #{role.id}
+            </if>
+        </where>
+    </update>
+
+    <!--删除角色  public void deleteRole(Integer roleId);-->
+    <delete id="deleteRole" parameterType="java.lang.Integer">
+        delete
+        from roles
+        where id = #{id}
+    </delete>
+    <!--根据roleId删除在中间表与菜单表的关联关系-->
+    <delete id="deleteRoleContextMenu" parameterType="java.lang.Integer">
+        delete
+        from role_menu_relation
+        where role_id = #{roleId}
+    </delete>
+
+    <!--角色列表查询&条件查询，根据条件查询Role角色-->
+    <select id="findAllRole" resultType="com.andreas.domain.Role">
+        select `id`,`code`,`name`,`description`,`created_time`,`updated_time`,`created_by`,`updated_by`
+        from roles
+        <where>
+            <if test="role.name != null and role.name != ''">
+                name like CONCAT('%',#{role.name},'%')
+            </if>
+        </where>
+    </select>
+
+    <!--根据角色ID查询关联的菜单信息ID,根据ID查询和关联到菜单信息ID，联表查询-->
+    <select id="findMenuByRoleId" resultType="java.lang.Integer" parameterType="java.lang.Integer">
+        SELECT m.id
+        FROM roles r
+                 INNER JOIN role_menu_relation rm ON r.id = rm.role_id
+                 INNER JOIN menu m ON m.id = rm.menu_id
+        WHERE r.id = #{roleId};
+    </select>
+
+</mapper>

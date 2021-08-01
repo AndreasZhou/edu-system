@@ -23,7 +23,7 @@ import java.util.Map;
  * 描述：PromotionAdController类
  */
 @RestController
-@RequestMapping("PromotionAd")
+@RequestMapping("promotionAd")
 public class PromotionAdController {
     @Autowired
     private PromotionAdService promotionAdService;
@@ -38,8 +38,7 @@ public class PromotionAdController {
     @RequestMapping("findAllPromotionAdByPage")
     public ResponseResult findAllPromotionAdByPage(@RequestBody PromotionAdPageInfoDTO dto) {
         PageInfo<PromotionAd> promotionAdPageInfo = promotionAdService.findAllPromotionAdByPage(dto);
-        ResponseResult responseResult = new ResponseResult(true, 200, "响应成功", promotionAdPageInfo);
-        return responseResult;
+        return new ResponseResult(true, 200, "响应成功", promotionAdPageInfo);
     }
 
     /**
@@ -49,7 +48,7 @@ public class PromotionAdController {
      * @Params:
      * @Return
      */
-    @RequestMapping("PromotionAdUpload")
+    @RequestMapping("promotionAdUpload")
     public ResponseResult promotionAdUpload(@RequestParam("file") MultipartFile file, HttpServletRequest request) throws IOException {
         String realPath = request.getServletContext().getRealPath("/");
         String substring = realPath.substring(0, realPath.indexOf("ssm_web"));
@@ -65,8 +64,7 @@ public class PromotionAdController {
         Map<String, String> map = new HashMap<>();
         map.put("fileName", newFileName);
         map.put("filePath", "http://localhost:8080/upload/" + newFileName);
-        ResponseResult responseResult = new ResponseResult(true, 200, "图片上传成功", map);
-        return responseResult;
+        return new ResponseResult(true, 200, "图片上传成功", map);
     }
 
     /**
@@ -80,12 +78,10 @@ public class PromotionAdController {
     public ResponseResult saveOrUpdatePromotionAd(@RequestBody PromotionAdDTO dto) {
         if (dto.getId() != null) {
             promotionAdService.updatePromotionAd(dto);
-            ResponseResult responseResult = new ResponseResult(true, 200, "修改成功", null);
-            return responseResult;
+            return new ResponseResult(true, 200, "修改成功", null);
         } else {
             promotionAdService.savePromotionAd(dto);
-            ResponseResult responseResult = new ResponseResult(true, 200, "保存成功", null);
-            return responseResult;
+            return new ResponseResult(true, 200, "保存成功", null);
         }
     }
 
@@ -99,8 +95,7 @@ public class PromotionAdController {
     @RequestMapping("findPromotionAdById")
     public ResponseResult findPromotionAdById(@RequestParam("id") Integer id) {
         PromotionAd promotionAd = promotionAdService.findPromotionAdById(id);
-        ResponseResult responseResult = new ResponseResult(true, 200, "响应成功", promotionAd);
-        return responseResult;
+        return new ResponseResult(true, 200, "响应成功", promotionAd);
     }
 
     /**
@@ -110,11 +105,10 @@ public class PromotionAdController {
      * @Params:
      * @Return
      */
-    @RequestMapping("findPromotionAdById")
+    @RequestMapping("updatePromotionAdStatus")
     public ResponseResult updatePromotionAdStatus(@RequestBody PromotionAdDTO dto) {
         promotionAdService.updatePromotionAdStatus(dto);
-        ResponseResult responseResult = new ResponseResult(true, 200, "修改成功", null);
-        return responseResult;
+        return new ResponseResult(true, 200, "修改成功", null);
     }
 
 }

@@ -2,6 +2,7 @@ package com.andreas.dao;
 
 import com.andreas.domain.User;
 import com.andreas.dto.UserDTO;
+import com.andreas.vo.UserVO;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -27,4 +28,13 @@ public interface UserMapper {
      * @Return
      */
     void updateUserStatus(@Param("id") Integer id, @Param("status") Integer status);
+
+    /**
+     * @Author: andreaszhou
+     * @Description: 用户登录
+     * @DateTime: 2021/8/1 17:11
+     * @Params:
+     * @Return
+     */
+    UserVO login(@Param("user") User user);
 }

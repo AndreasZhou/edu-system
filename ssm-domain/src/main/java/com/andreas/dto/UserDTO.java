@@ -1,43 +1,150 @@
 package com.andreas.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
-import java.util.List;
 
 public class UserDTO {
+
+    // 用户id
+    private Integer id;
+    // 用户昵称
+    private String name;
+    // 用户头像地址
+    private String portrait;
+    // 注册手机
+    private String phone;
+    // 用户密码（可以为空，支持只用验证码注册、登录）
+    private String password;
+    // 注册ip
+    private String reg_ip;
+    // 是否有效用户
+    private Integer account_non_expired;
+    // 账号是否未过期
+    private Integer credentials_non_expired;
+    // 是否未锁定
+    private Integer account_non_locked;
+    // 用户状态
+    private String status;
+    // 是否删除
+    private Integer is_del;
+    // 创建时间
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date create_time;
+    // 更新时间
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date update_time;
 
     private Integer currentPage;
     private Integer pageSize;
 
-    // 多条件查询：用户名（手机号）
-    private String username;
-    // 注册起始时间 2020/11/11 2020-08-04
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date startCreateTime;
-    // 注册结束时间
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date endCreateTime;
-
-
-    private List<Integer> roleIdList;
-
-    private Integer userId;
-
-    public List<Integer> getRoleIdList() {
-        return roleIdList;
+    public Integer getId() {
+        return id;
     }
 
-    public void setRoleIdList(List<Integer> roleIdList) {
-        this.roleIdList = roleIdList;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-    public Integer getUserId() {
-        return userId;
+    public String getName() {
+        return name;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getPortrait() {
+        return portrait;
+    }
+
+    public void setPortrait(String portrait) {
+        this.portrait = portrait;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getReg_ip() {
+        return reg_ip;
+    }
+
+    public void setReg_ip(String reg_ip) {
+        this.reg_ip = reg_ip;
+    }
+
+    public Integer getAccount_non_expired() {
+        return account_non_expired;
+    }
+
+    public void setAccount_non_expired(Integer account_non_expired) {
+        this.account_non_expired = account_non_expired;
+    }
+
+    public Integer getCredentials_non_expired() {
+        return credentials_non_expired;
+    }
+
+    public void setCredentials_non_expired(Integer credentials_non_expired) {
+        this.credentials_non_expired = credentials_non_expired;
+    }
+
+    public Integer getAccount_non_locked() {
+        return account_non_locked;
+    }
+
+    public void setAccount_non_locked(Integer account_non_locked) {
+        this.account_non_locked = account_non_locked;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public Integer getIs_del() {
+        return is_del;
+    }
+
+    public void setIs_del(Integer is_del) {
+        this.is_del = is_del;
+    }
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    public Date getCreate_time() {
+        return create_time;
+    }
+
+    public void setCreate_time(Date create_time) {
+        this.create_time = create_time;
+    }
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    public Date getUpdate_time() {
+        return update_time;
+    }
+
+    public void setUpdate_time(Date update_time) {
+        this.update_time = update_time;
     }
 
     public Integer getCurrentPage() {
@@ -56,27 +163,22 @@ public class UserDTO {
         this.pageSize = pageSize;
     }
 
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public Date getStartCreateTime() {
-        return startCreateTime;
-    }
-
-    public void setStartCreateTime(Date startCreateTime) {
-        this.startCreateTime = startCreateTime;
-    }
-
-    public Date getEndCreateTime() {
-        return endCreateTime;
-    }
-
-    public void setEndCreateTime(Date endCreateTime) {
-        this.endCreateTime = endCreateTime;
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", portrait='" + portrait + '\'' +
+                ", phone='" + phone + '\'' +
+                ", password='" + password + '\'' +
+                ", reg_ip='" + reg_ip + '\'' +
+                ", account_non_expired=" + account_non_expired +
+                ", credentials_non_expired=" + credentials_non_expired +
+                ", account_non_locked=" + account_non_locked +
+                ", status='" + status + '\'' +
+                ", is_del=" + is_del +
+                ", create_time=" + create_time +
+                ", update_time=" + update_time +
+                '}';
     }
 }

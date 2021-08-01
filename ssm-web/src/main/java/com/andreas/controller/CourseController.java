@@ -3,10 +3,15 @@ package com.andreas.controller;
 import com.andreas.domain.Course;
 import com.andreas.domain.ResponseResult;
 import com.andreas.dto.CourseDTO;
+import com.andreas.dto.CoursePageQueryDTO;
 import com.andreas.service.CourseService;
 import com.andreas.vo.CourseVO;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -31,20 +36,20 @@ public class CourseController {
      * @Description: 根据搜索条件查询课程信息
      * @DateTime: 2021/7/21 8:41
      * @Params: dto
-     * @Return
+     * @Return: ResponseResult
      */
     @RequestMapping("/findCourseByCondition")
-    public ResponseResult findCourseByCondition(@RequestBody CourseDTO dto) {
-        List<Course> courseList = courseService.findCourseByCondition(dto);
-        return new ResponseResult(true, 0, "成功", courseList);
+    public ResponseResult findCourseByCondition(@RequestBody CoursePageQueryDTO dto) {
+        PageInfo<Course> coursePageInfo = courseService.findCourseByCondition(dto);
+        return new ResponseResult(true, 0, "成功", coursePageInfo);
     }
 
     /**
      * @Author: andreaszhou
      * @Description: 文件上传
      * @DateTime: 2021/7/21 10:02
-     * @Params:
-     * @Return
+     * @Params: file, request
+     * @Return: ResponseResult
      */
     @RequestMapping("/courseUpload")
     public ResponseResult courseUpload(@RequestParam("file") MultipartFile file, HttpServletRequest request) throws IOException {
@@ -72,62 +77,50 @@ public class CourseController {
         Map<String, String> map = new HashMap<>();
         map.put("fileName", newFileName);
         map.put("filePath", "http://localhost:8080/upload/" + newFileName);
-        ResponseResult responseResult = new ResponseResult(true, 200, "图片上传成功", map);
-        return responseResult;
+        return new ResponseResult(true, 200, "图片上传成功", map);
     }
 
     /**
      * @Author: andreaszhou
      * @Description: 新建课程和编辑课程
      * @DateTime: 2021/7/21 14:02
-     * @Params:
-     * @Return
+     * @Params: dto
+     * @Return: ResponseResult
      */
     @RequestMapping("saveOrUpdateCourse")
-    public ResponseResult saveOrUpdateCourse(@RequestBody CourseDTO dto){
-        if (dto.getId()==null){
+    public ResponseResult saveOrUpdateCourse(@RequestBody CourseDTO dto) {
+        if (dto.getId() == null) {
             courseService.saveCourseOrTeacher(dto);
-            ResponseResult responseResult = new ResponseResult(true, 200, "新增成功", null);
-            return responseResult;
-        }else {
+            return new ResponseResult(true, 200, "新增成功", null);
+        } else {
             courseService.updateCourseOrTeacher(dto);
-            ResponseResult responseResult = new ResponseResult(true, 200, "修改成功", null);
-            return responseResult;
+            return new ResponseResult(true, 200, "修改成功", null);
         }
     }
 
     /**
      * @Author: andreaszhou
-     * @Description: 课程上下架,修改课程转态
+     * @Description: 课程上下架, 修改课程转态
      * @DateTime: 2021/7/21 14:03
      * @Params: dto
      * @Return
      */
     @RequestMapping("/updateCourseStatus")
-    public ResponseResult updateCourseStatus(@RequestBody CourseDTO dto){
+    public ResponseResult updateCourseStatus(@RequestBody CourseDTO dto) {
         courseService.updateCourseStatus(dto);
-        ResponseResult responseResult = new ResponseResult(true,200,"修改成功",null);
-        return responseResult;
+        return new ResponseResult(true, 200, "修改成功", null);
     }
+
     /**
      * @Author: andreaszhou
      * @Description: 编辑时的回显操作 其实就是简单的回显
      * @DateTime: 2021/7/21 14:14
      * @Params: id
-     * @Return 
+     * @Return
      */
     @RequestMapping("/findCourseById")
     public ResponseResult findCourseById(@RequestParam("id") Integer id) {
         CourseVO vo = courseService.findCourseById(id);
-        ResponseResult responseResult = new ResponseResult(true,200,"查询成功",vo);
-        return responseResult;
+        return new ResponseResult(true, 200, "查询成功", vo);
     }
-    /**
-     * @Author: andreaszhou
-     * @Description: TODO
-     * @DateTime: 2021/7/21 14:43
-     * @Params: 
-     * @Return 
-     */
-    
 }
