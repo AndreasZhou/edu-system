@@ -1,14 +1,14 @@
 package com.andreas.controller;
 
 import com.andreas.domain.PromotionSpace;
-import com.andreas.domain.ResponseResult;
 import com.andreas.dto.PromotionSpaceDTO;
 import com.andreas.service.PromotionSpaceService;
 import com.andreas.vo.PromotionSpaceVO;
+import com.andreas.vo.ResponseResultVO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -30,10 +30,9 @@ public class PromotionSpaceController {
      * @Return
      */
     @RequestMapping("findAllPromotionSpace")
-    public ResponseResult findAllPromotionSpace() {
+    public ResponseResultVO findAllPromotionSpace() {
         List<PromotionSpaceVO> promotionSpaceVOS = promotionSpaceService.findAllPromotionSpace();
-        ResponseResult responseResult = new ResponseResult(true, 200, "响应成功", promotionSpaceVOS);
-        return responseResult;
+        return new ResponseResultVO(true, 200, "响应成功", promotionSpaceVOS);
     }
 
     /**
@@ -44,15 +43,13 @@ public class PromotionSpaceController {
      * @Return
      */
     @RequestMapping("saveOrUpdatePromotionSpace")
-    public ResponseResult saveOrUpdatePromotionSpace(@RequestBody PromotionSpaceDTO dto) {
+    public ResponseResultVO saveOrUpdatePromotionSpace(@RequestBody PromotionSpaceDTO dto) {
         if (dto.getId() != null) {
             promotionSpaceService.updatePromotionSpace(dto);
-            ResponseResult responseResult = new ResponseResult(true, 200, "修改成功", null);
-            return responseResult;
+            return new ResponseResultVO(true, 200, "修改成功", null);
         } else {
             promotionSpaceService.savePromotionSpace(dto);
-            ResponseResult responseResult = new ResponseResult(true, 200, "保存成功", null);
-            return responseResult;
+            return new ResponseResultVO(true, 200, "保存成功", null);
         }
     }
 
@@ -63,10 +60,9 @@ public class PromotionSpaceController {
      * @Params:
      * @Return
      */
-    @RequestMapping("findPromotionSpaceById")
-    public ResponseResult findPromotionSpaceById(@RequestParam("id") Integer id){
+    @RequestMapping("findPromotionSpaceById/{id}")
+    public ResponseResultVO findPromotionSpaceById(@PathVariable Integer id) {
         PromotionSpace promotionSpace = promotionSpaceService.findPromotionSpaceById(id);
-        ResponseResult responseResult = new ResponseResult(true,200,"响应成功",promotionSpace);
-        return responseResult;
+        return new ResponseResultVO(true, 200, "响应成功", promotionSpace);
     }
 }

@@ -1,5 +1,6 @@
 package com.andreas.service.impl;
 
+import com.andreas.bo.CourseSectionBO;
 import com.andreas.dao.CourseContentMapper;
 import com.andreas.domain.Course;
 import com.andreas.domain.CourseLesson;
@@ -7,6 +8,7 @@ import com.andreas.domain.CourseSection;
 import com.andreas.dto.CourseLessonDTO;
 import com.andreas.dto.CourseSectionDTO;
 import com.andreas.service.CourseContentService;
+import com.andreas.vo.CourseLessonVO;
 import com.andreas.vo.CourseSectionVO;
 import com.andreas.vo.CourseVO;
 import org.springframework.beans.BeanUtils;
@@ -35,14 +37,39 @@ public class CourseContentServiceImpl implements CourseContentService {
      */
     @Override
     public List<CourseSectionVO> findSectionAndLesson(Integer courseId) {
-        List<CourseSection> sectionAndLesson = courseContentMapper.findSectionAndLesson(courseId);
+        List<CourseSectionBO> courseSectionBOS = courseContentMapper.findSectionAndLesson(courseId);
         List<CourseSectionVO> courseSectionVOS = new ArrayList<>();
-        for (CourseSection courseSection : sectionAndLesson) {
+        for (CourseSectionBO courseSectionBO : courseSectionBOS) {
             CourseSectionVO courseSectionVO = new CourseSectionVO();
-            BeanUtils.copyProperties(courseSection, courseSectionVO);
+            BeanUtils.copyProperties(courseSectionBO, courseSectionVO);
+            List<CourseLessonVO> courseLessonVOS = new ArrayList<>();
+            for (CourseLesson courseLesson : courseSectionBO.getLessonList()
+            ) {
+                CourseLessonVO courseLessonVO = new CourseLessonVO();
+                BeanUtils.copyProperties(courseLesson, courseLessonVO);
+                courseLessonVOS.add(courseLessonVO);
+            }
+            courseSectionVO.setLessonVOList(courseLessonVOS);
+            courseSectionVOS.add(courseSectionVO);
         }
         return courseSectionVOS;
     }
+
+    /**
+     * @Author: andreaszhou
+     * @Description: 递归代码模板
+     * @DateTime: 2021/8/7 16:05
+     * @Params:
+     * @Return
+     */
+/*    public void  recursion(List<CourseSectionBO> sectionAndLesson,List<CourseSectionVO> courseSectionVOS){
+        for (CourseSectionBO c: sectionAndLesson
+             ) {
+            CourseSectionVO courseSectionVO = new CourseSectionVO();
+            BeanUtils.copyProperties(c,courseSectionVO);
+            recursion();
+        }
+    }*/
 
     /**
      * @Author: andreaszhou
@@ -144,5 +171,49 @@ public class CourseContentServiceImpl implements CourseContentService {
         Course course = courseContentMapper.findCourseById(courseId);
         BeanUtils.copyProperties(course, courseVO);
         return courseVO;
+    }
+
+    /**
+     * @Author: andreaszhou
+     * @Description: 更新课时状态
+     * @DateTime: 2021/8/7 17:19
+     * @Params: dto
+     * @Return
+     */
+    @Override
+    public void updateLessonStatus(CourseLessonDTO dto) {
+        CourseLesson courseLesson = new CourseLesson();
+        BeanUtils.copyProperties(dto, courseLesson);
+        courseContentMapper.updateLessonStatus(courseLesson);
+    }
+
+    /**
+     * @Author: andreaszhou
+     * @Description: 编辑章节信息回显
+     * @DateTime: 2021/8/7 17:32
+     * @Params: courseLessonId
+     * @Return
+     */
+    @Override
+    public CourseLessonVO showCourseLesson(Integer courseLessonId) {
+        CourseLesson courseLesson = courseContentMapper.showCourseLesson(courseLessonId);
+        CourseLessonVO courseLessonVO = new CourseLessonVO();
+        BeanUtils.copyProperties(courseLesson, courseLessonVO);
+        return courseLessonVO;
+    }
+
+    /**
+     * @Author: andreaszhou
+     * @Description: 编辑章节信息回显
+     * @DateTime: 2021/8/7 17:52
+     * @Params: dto
+     * @Return
+     */
+    @Override
+    public CourseSectionVO showCourseSection(Integer courseSectionId) {
+        CourseSection courseSection = courseContentMapper.showCourseSection(courseSectionId);
+        CourseSectionVO courseSectionVO = new CourseSectionVO();
+        BeanUtils.copyProperties(courseSection,courseSectionVO);
+        return courseSectionVO;
     }
 }

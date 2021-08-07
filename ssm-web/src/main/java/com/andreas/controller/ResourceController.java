@@ -1,6 +1,6 @@
 package com.andreas.controller;
 
-import com.andreas.domain.ResponseResult;
+import com.andreas.vo.ResponseResultVO;
 import com.andreas.dto.ResourceDTO;
 import com.andreas.dto.ResourcePageQueryDTO;
 import com.andreas.service.ResourceService;
@@ -30,9 +30,9 @@ public class ResourceController {
      * @Return
      */
     @RequestMapping("findAllResource")
-    public ResponseResult findAllResource(@RequestBody ResourcePageQueryDTO dto) {
+    public ResponseResultVO findAllResource(@RequestBody ResourcePageQueryDTO dto) {
         PageInfo<ResourceVO> pageInfo = resourceService.findAllResource(dto);
-        return new ResponseResult(true, 200, "响应成功", pageInfo);
+        return new ResponseResultVO(true, 200, "响应成功", pageInfo);
     }
 
     /**
@@ -43,9 +43,9 @@ public class ResourceController {
      * @Return
      */
     @RequestMapping("showResourceById/{id}")
-    public ResponseResult showResourceId(@PathVariable Integer id) {
+    public ResponseResultVO showResourceId(@PathVariable Integer id) {
         ResourceVO resourceVO = resourceService.showResourceById(id);
-        return new ResponseResult(true, 200, "响应成功", resourceVO);
+        return new ResponseResultVO(true, 200, "响应成功", resourceVO);
     }
 
     /**
@@ -56,15 +56,15 @@ public class ResourceController {
      * @Return
      */
     @RequestMapping("saveOrUpdateResource")
-    public ResponseResult saveOrUpdateResource(@RequestBody ResourceDTO dto) {
+    public ResponseResultVO saveOrUpdateResource(@RequestBody ResourceDTO dto) {
         if (dto.getId() != null) {
             // 如果有id的值不为null，那么操作的是更新的操作
             resourceService.updateResource(dto);
-            return new ResponseResult(true, 200, "修改成功", null);
+            return new ResponseResultVO(true, 200, "修改成功", null);
         } else {
             // 如果id1的值为null, 那么操作的是保存的操作
             resourceService.saveResource(dto);
-            return new ResponseResult(true, 200, "保存成功", null);
+            return new ResponseResultVO(true, 200, "保存成功", null);
         }
 
     }
@@ -77,9 +77,9 @@ public class ResourceController {
      * @Return
      */
     @RequestMapping("deleteResource/{id}")
-    public ResponseResult deleteResource(@PathVariable Integer id) {
+    public ResponseResultVO deleteResource(@PathVariable Integer id) {
         resourceService.deleteResource(id);
-        return new ResponseResult(null, 200, "删除成功", null);
+        return new ResponseResultVO(null, 200, "删除成功", null);
     }
 
 

@@ -1,10 +1,12 @@
 package com.andreas.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
+@Data
 public class UserDTO {
 
     // 用户id
@@ -35,150 +37,9 @@ public class UserDTO {
     // 更新时间
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date update_time;
-
+    // 页数
     private Integer currentPage;
+    // 页大小
     private Integer pageSize;
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getPortrait() {
-        return portrait;
-    }
-
-    public void setPortrait(String portrait) {
-        this.portrait = portrait;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getReg_ip() {
-        return reg_ip;
-    }
-
-    public void setReg_ip(String reg_ip) {
-        this.reg_ip = reg_ip;
-    }
-
-    public Integer getAccount_non_expired() {
-        return account_non_expired;
-    }
-
-    public void setAccount_non_expired(Integer account_non_expired) {
-        this.account_non_expired = account_non_expired;
-    }
-
-    public Integer getCredentials_non_expired() {
-        return credentials_non_expired;
-    }
-
-    public void setCredentials_non_expired(Integer credentials_non_expired) {
-        this.credentials_non_expired = credentials_non_expired;
-    }
-
-    public Integer getAccount_non_locked() {
-        return account_non_locked;
-    }
-
-    public void setAccount_non_locked(Integer account_non_locked) {
-        this.account_non_locked = account_non_locked;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public Integer getIs_del() {
-        return is_del;
-    }
-
-    public void setIs_del(Integer is_del) {
-        this.is_del = is_del;
-    }
-
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    public Date getCreate_time() {
-        return create_time;
-    }
-
-    public void setCreate_time(Date create_time) {
-        this.create_time = create_time;
-    }
-
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    public Date getUpdate_time() {
-        return update_time;
-    }
-
-    public void setUpdate_time(Date update_time) {
-        this.update_time = update_time;
-    }
-
-    public Integer getCurrentPage() {
-        return currentPage;
-    }
-
-    public void setCurrentPage(Integer currentPage) {
-        this.currentPage = currentPage;
-    }
-
-    public Integer getPageSize() {
-        return pageSize;
-    }
-
-    public void setPageSize(Integer pageSize) {
-        this.pageSize = pageSize;
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", portrait='" + portrait + '\'' +
-                ", phone='" + phone + '\'' +
-                ", password='" + password + '\'' +
-                ", reg_ip='" + reg_ip + '\'' +
-                ", account_non_expired=" + account_non_expired +
-                ", credentials_non_expired=" + credentials_non_expired +
-                ", account_non_locked=" + account_non_locked +
-                ", status='" + status + '\'' +
-                ", is_del=" + is_del +
-                ", create_time=" + create_time +
-                ", update_time=" + update_time +
-                '}';
-    }
 }

@@ -1,6 +1,6 @@
 package com.andreas.controller;
 
-import com.andreas.domain.ResponseResult;
+import com.andreas.vo.ResponseResultVO;
 import com.andreas.dto.ResourceCategoryDTO;
 import com.andreas.service.ResourceCategoryService;
 import com.andreas.service.ResourceService;
@@ -32,9 +32,9 @@ public class ResourceCategoryController {
      * @Return
      */
     @RequestMapping("findAllResourceCategory")
-    public ResponseResult findAllResourceCategory() {
+    public ResponseResultVO findAllResourceCategory() {
         List<ResourceCategoryVO> resourceCategoryVOS = resourceCategoryService.findAllResourceCategory();
-        return new ResponseResult(true, 200, "响应成功", resourceCategoryVOS);
+        return new ResponseResultVO(true, 200, "响应成功", resourceCategoryVOS);
     }
 
     /**
@@ -45,13 +45,13 @@ public class ResourceCategoryController {
      * @Return
      */
     @RequestMapping("saveOrUpdateResourceCategory")
-    public ResponseResult saveOrUpdateResourceCategory(@RequestBody ResourceCategoryDTO dto) {
+    public ResponseResultVO saveOrUpdateResourceCategory(@RequestBody ResourceCategoryDTO dto) {
         if (dto.getId() != null) {
             resourceCategoryService.updateResourceCategory(dto);
-            return new ResponseResult(true, 200, "保存成功", null);
+            return new ResponseResultVO(true, 200, "保存成功", null);
         } else {
             resourceCategoryService.saveResourceCategory(dto);
-            return new ResponseResult(true, 200, "修改成功", null);
+            return new ResponseResultVO(true, 200, "修改成功", null);
         }
     }
 
@@ -63,12 +63,12 @@ public class ResourceCategoryController {
      * @Return
      */
     @RequestMapping("deleteResourceCategory/{id}")
-    public ResponseResult deleteResourceCategory(@PathVariable Integer id) {
+    public ResponseResultVO deleteResourceCategory(@PathVariable Integer id) {
         // 1.首先将资源对应的资源的category_id设置为null，因为删除资源分类的时，对应的资源的分类的id的值为null
         resourceService.deleteResourceCategoryId(id);
         // 2.将对应的资源的分类删除
         resourceCategoryService.deleteResourceCategory(id);
-        return new ResponseResult(true, 200, "删除成功", null);
+        return new ResponseResultVO(true, 200, "删除成功", null);
     }
 
 
@@ -80,8 +80,8 @@ public class ResourceCategoryController {
      * @Return
      */
     @RequestMapping("showResourceCategoryById/{id}")
-    public ResponseResult showResourceCategoryById(@PathVariable Integer id) {
+    public ResponseResultVO showResourceCategoryById(@PathVariable Integer id) {
         ResourceCategoryVO resourceCategoryVO = resourceCategoryService.showResourceCategoryById(id);
-        return new ResponseResult(true, 200, "响应成功", resourceCategoryVO);
+        return new ResponseResultVO(true, 200, "响应成功", resourceCategoryVO);
     }
 }

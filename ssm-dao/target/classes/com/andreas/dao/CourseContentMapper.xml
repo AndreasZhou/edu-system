@@ -2,14 +2,16 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.andreas.dao.CourseContentMapper">
-    <resultMap id="findSectionAndLessonResultMap" type="com.andreas.domain.CourseSection">
+    <resultMap id="findSectionAndLessonResultMap" type="com.andreas.bo.CourseSectionBO">
         <id property="id" column="id"/>
+        <result property="courseId" column="course_id"/>
         <result property="sectionName" column="section_name"/>
         <result property="description" column="description"/>
         <result property="createTime" column="create_time"/>
         <result property="updateTime" column="update_time"/>
         <result property="isDel" column="is_del"/>
         <result property="orderNum" column="order_num"/>
+        <result property="status" column="status"/>
         <collection property="lessonList" ofType="com.andreas.domain.CourseLesson">
             <id property="id" column="lesson_id"/>
             <result property="courseId" column="course_id"/>
@@ -17,8 +19,10 @@
             <result property="theme" column="theme"/>
             <result property="duration" column="duration"/>
             <result property="isFree" column="is_free"/>
-            <result property="orderNum" column="order_num"/>
+            <result property="createTime" column="create_time"/>
+            <result property="updateTime" column="update_time"/>
             <result property="isDel" column="is_del"/>
+            <result property="orderNum" column="order_num"/>
             <result property="status" column="status"/>
         </collection>
     </resultMap>
@@ -30,25 +34,26 @@
                cl.section_id,
                cl.theme,
                cl.duration,
+               cl.is_free,
                cl.create_time,
                cl.update_time,
                cl.is_del,
                cl.order_num,
                cl.status
         from course_section cs
-                 left join course_lesson cl on cs.id = cl.session_id
+                 left join course_lesson cl on cs.id = cl.section_id
         where cs.course_id = #{courseId}
         order by cs.order_num asc, cl.order_num asc
     </select>
     <!--根据ID查询课程信息，回显章节对应的课程信息-->
     <select id="findCourseById" resultType="com.andreas.domain.Course">
-        select *
+        select id, course_name courseName
         from course
         where id = #{courseId};
     </select>
     <!--更新章节状态-->
     <update id="updateSectionStatus" parameterType="com.andreas.domain.CourseSection">
-        update course_session
+        update course_section
         <trim prefix="set" suffixOverrides=",">
             <if test="courseSection.status != null and courseSection.status != ''">
                 status = #{courseSection.status}
@@ -59,28 +64,29 @@
         </where>
     </update>
     <!--保存章节信息-->
-    <insert id="saveSection" parameterType="com.andreas.dto.CourseSectionDTO">
-        insert into course_section (course_id, section_time, description, create_time, update_time, order_num)
-        values (#{dto.courseId}, #{dto.sectionName}, #{dto.description}, #{dto.createTime}, #{dto.updateTime},
-                #{dto.orderNum})
+    <insert id="saveSection" parameterType="com.andreas.domain.CourseSection">
+        insert into course_section (course_id, section_name, description, create_time, update_time, order_num)
+        values (#{courseSection.courseId}, #{courseSection.sectionName}, #{courseSection.description},
+                #{courseSection.createTime}, #{courseSection.updateTime},
+                #{courseSection.orderNum})
     </insert>
     <!--更新章节信息-->
     <update id="updateSection" parameterType="com.andreas.domain.CourseSection">
-        update course_session
+        update course_section
         <trim prefix="set" suffixOverrides=",">
-            <if test="courseSection.courseId">
+            <if test="courseSection.courseId != null and courseSection.courseId != '' ">
                 course_id = #{courseSection.courseId},
             </if>
-            <if test="courseSection.sectionName">
+            <if test="courseSection.sectionName != null and courseSection.sectionName != '' ">
                 section_name = #{courseSection.sectionName},
             </if>
-            <if test="courseSection.description">
+            <if test="courseSection.description != null and courseSection.description != '' ">
                 description = #{courseSection.description},
             </if>
-            <if test="courseSection.orderNum">
+            <if test="courseSection.orderNum != null and courseSection.orderNum != '' ">
                 order_num = #{courseSection.orderNum},
             </if>
-            <if test="courseSection.updateTime">
+            <if test="courseSection.updateTime != null">
                 update_time = #{courseSection.updateTime}
             </if>
         </trim>
@@ -101,26 +107,66 @@
             <if test="courseLesson.theme != null and courseLesson.theme != '' ">
                 theme = #{courseLesson.theme},
             </if>
-            <if test="courseLesson.duration != null and courseLesson.duration != '' ">
+            <if test="courseLesson.duration != null and courseLesson.duration != ''">
                 duration = #{courseLesson.duration},
             </if>
             <if test="courseLesson.isFree != null and courseLesson.isFree != '' ">
-                isFree = #{courseLesson.isFree},
+                is_free = #{courseLesson.isFree},
             </if>
             <if test="courseLesson.orderNum != null and courseLesson.orderNum != '' ">
-                orderNum = #{courseLesson.orderNum}
+                order_num = #{courseLesson.orderNum},
+            </if>
+            <if test="courseLesson.updateTime != null">
+                update_time = #{courseLesson.updateTime}
             </if>
         </trim>
         <where>
-            <if test="courseLesson.id !=null and courseLesson.id != '' ">id=#{courseLesson.id}</if>
+            <if test="courseLesson.id != null and courseLesson.id != '' ">
+                id = #{courseLesson.id}
+            </if>
         </where>
     </update>
     <!--保存课时信息-->
-    <insert id="saveLesson" parameterType="com.andreas.domain.CourseSection">
+    <insert id="saveLesson" parameterType="com.andreas.domain.CourseLesson">
         insert into course_lesson (course_id, section_id, theme, duration, is_free, create_time, update_time, order_num)
         values (#{courseLesson.courseId}, #{courseLesson.sectionId}, #{courseLesson.theme}, #{courseLesson.duration},
-                #{courseLesson.is_free},
-                #{courseLesson.create_time}, #{courseLesson.update_time}, #{courseLesson.order_num})
+                #{courseLesson.isFree}, #{courseLesson.createTime}, #{courseLesson.updateTime},
+                #{courseLesson.orderNum})
     </insert>
-
+    <!--更细课时状态-->
+    <update id="updateLessonStatus" parameterType="com.andreas.domain.CourseLesson">
+        update course_lesson
+        set status = #{courseLesson.status}
+        where id = #{courseLesson.id}
+    </update>
+    <!--编辑课时信息回显-->
+    <select id="showCourseLesson" parameterType="java.lang.Integer" resultType="com.andreas.domain.CourseLesson">
+        select id,
+               course_id   courseId,
+               section_id  sectionId,
+               theme,
+               duration,
+               is_free     isFree,
+               create_time createTime,
+               update_time updateTime,
+               is_del      isDel,
+               order_num   orderNum,
+               status
+        from course_lesson
+        where id = #{courseLessonId};
+    </select>
+    <!--编辑章节信息回显-->
+    <select id="showCourseSection" parameterType="java.lang.Integer" resultType="com.andreas.domain.CourseSection">
+        select id,
+               course_id    courseId,
+               section_name sectionName,
+               description,
+               create_time  createTime,
+               update_time  updateTime,
+               is_del       isDel,
+               order_num    orderNum,
+               status
+        from course_section
+        where id = #{courseSectionId}
+    </select>
 </mapper>

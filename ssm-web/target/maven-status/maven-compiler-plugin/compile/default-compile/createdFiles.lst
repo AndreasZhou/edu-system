@@ -1,0 +1,10 @@
+com\andreas\controller\PromotionAdController.class
+com\andreas\controller\TestController.class
+com\andreas\controller\PromotionSpaceController.class
+com\andreas\controller\ResourceController.class
+com\andreas\controller\MenuController.class
+com\andreas\controller\UserController.class
+com\andreas\controller\CourseController.class
+com\andreas\controller\ResourceCategoryController.class
+com\andreas\controller\RoleController.class
+com\andreas\controller\CourseContentController.class

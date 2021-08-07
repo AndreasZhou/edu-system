@@ -1,22 +1,21 @@
 package com.andreas.controller;
 
 import com.andreas.domain.PromotionAd;
-import com.andreas.domain.ResponseResult;
 import com.andreas.dto.PromotionAdDTO;
 import com.andreas.dto.PromotionAdPageInfoDTO;
 import com.andreas.service.PromotionAdService;
+import com.andreas.vo.PromotionAdVO;
+import com.andreas.vo.ResponseResultVO;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -36,9 +35,9 @@ public class PromotionAdController {
      * @Return
      */
     @RequestMapping("findAllPromotionAdByPage")
-    public ResponseResult findAllPromotionAdByPage(@RequestBody PromotionAdPageInfoDTO dto) {
-        PageInfo<PromotionAd> promotionAdPageInfo = promotionAdService.findAllPromotionAdByPage(dto);
-        return new ResponseResult(true, 200, "响应成功", promotionAdPageInfo);
+    public ResponseResultVO findAllPromotionAdByPage(@RequestBody PromotionAdPageInfoDTO dto) {
+        PageInfo<PromotionAdVO> promotionAdVOPageInfo = promotionAdService.findAllPromotionAdByPage(dto);
+        return new ResponseResultVO(true, 200, "响应成功", promotionAdVOPageInfo);
     }
 
     /**
@@ -49,7 +48,7 @@ public class PromotionAdController {
      * @Return
      */
     @RequestMapping("promotionAdUpload")
-    public ResponseResult promotionAdUpload(@RequestParam("file") MultipartFile file, HttpServletRequest request) throws IOException {
+    public ResponseResultVO promotionAdUpload(@RequestParam("file") MultipartFile file, HttpServletRequest request) throws IOException {
         String realPath = request.getServletContext().getRealPath("/");
         String substring = realPath.substring(0, realPath.indexOf("ssm_web"));
         String uploadPath = substring + "upload\\";
@@ -64,7 +63,7 @@ public class PromotionAdController {
         Map<String, String> map = new HashMap<>();
         map.put("fileName", newFileName);
         map.put("filePath", "http://localhost:8080/upload/" + newFileName);
-        return new ResponseResult(true, 200, "图片上传成功", map);
+        return new ResponseResultVO(true, 200, "图片上传成功", map);
     }
 
     /**
@@ -75,13 +74,13 @@ public class PromotionAdController {
      * @Return
      */
     @RequestMapping("saveOrUpdatePromotionAd")
-    public ResponseResult saveOrUpdatePromotionAd(@RequestBody PromotionAdDTO dto) {
+    public ResponseResultVO saveOrUpdatePromotionAd(@RequestBody PromotionAdDTO dto) {
         if (dto.getId() != null) {
             promotionAdService.updatePromotionAd(dto);
-            return new ResponseResult(true, 200, "修改成功", null);
+            return new ResponseResultVO(true, 200, "修改成功", null);
         } else {
             promotionAdService.savePromotionAd(dto);
-            return new ResponseResult(true, 200, "保存成功", null);
+            return new ResponseResultVO(true, 200, "保存成功", null);
         }
     }
 
@@ -92,10 +91,10 @@ public class PromotionAdController {
      * @Params:
      * @Return
      */
-    @RequestMapping("findPromotionAdById")
-    public ResponseResult findPromotionAdById(@RequestParam("id") Integer id) {
+    @RequestMapping("findPromotionAdById/{id}")
+    public ResponseResultVO findPromotionAdById(@PathVariable Integer id) {
         PromotionAd promotionAd = promotionAdService.findPromotionAdById(id);
-        return new ResponseResult(true, 200, "响应成功", promotionAd);
+        return new ResponseResultVO(true, 200, "响应成功", promotionAd);
     }
 
     /**
@@ -106,9 +105,9 @@ public class PromotionAdController {
      * @Return
      */
     @RequestMapping("updatePromotionAdStatus")
-    public ResponseResult updatePromotionAdStatus(@RequestBody PromotionAdDTO dto) {
+    public ResponseResultVO updatePromotionAdStatus(@RequestBody PromotionAdDTO dto) {
         promotionAdService.updatePromotionAdStatus(dto);
-        return new ResponseResult(true, 200, "修改成功", null);
+        return new ResponseResultVO(true, 200, "修改成功", null);
     }
 
 }

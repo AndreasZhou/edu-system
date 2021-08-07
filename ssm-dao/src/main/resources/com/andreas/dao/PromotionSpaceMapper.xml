@@ -2,29 +2,36 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.andreas.dao.PromotionSpaceMapper">
-    <select id="findAllPromotionSpace" resultType="com.andreas.vo.PromotionSpaceVO">
+    <!--查询所有的广告位-->
+    <select id="findAllPromotionSpace" resultType="com.andreas.domain.PromotionSpace">
         select *
         from promotion_space;
     </select>
-    <update id="updatePromotionSpace">
+    <!--更新广告位信息-->
+    <update id="updatePromotionSpace" parameterType="com.andreas.domain.PromotionSpace">
         update promotion_space
         <trim prefix="set" suffixOverrides=",">
-            <if test="dto.name != null and dto.name == ''">
-                name = #{dto.name}
+            <if test="promotionSpace.name != null and promotionSpace.name != '' ">
+                name = #{promotionSpace.name}
             </if>
         </trim>
         <where>
-            <if test="dto.id != null and dto.id == ''">
-                id = #{dto.id}
+            <if test="promotionSpace.id != null and promotionSpace.id != ''">
+                id = #{promotionSpace.id}
             </if>
         </where>
     </update>
+    <!--添加广告位信息-->
     <insert id="savePromotionSpace">
-        insert into promotion_space (name, spaceKey, createTime, updateTime, isDel)
-        values (#{dto.name}, #{dto.spaceKey}, #{dto.createTime}, #{dto.updateTime}, #{dto.isDel})
+        insert into promotion_space (`name`, spaceKey, createTime, updateTime, isDel)
+        values (#{promotionSpace.name}, #{promotionSpace.spaceKey}, #{promotionSpace.createTime},
+                #{promotionSpace.updateTime}, #{promotionSpace.isDel})
     </insert>
-    <select id="findPromotionSpaceById" parameterType="java.lang.Integer" resultType="com.andreas.domain.PromotionSpace">
+    <!--通过id查找广告位信息-->
+    <select id="findPromotionSpaceById" parameterType="java.lang.Integer"
+            resultType="com.andreas.domain.PromotionSpace">
         select *
-        from promotion_space;
+        from promotion_space
+        where id = #{id}
     </select>
 </mapper>

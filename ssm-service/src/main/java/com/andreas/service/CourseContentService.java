@@ -1,7 +1,9 @@
 package com.andreas.service;
 
+import com.andreas.domain.CourseSection;
 import com.andreas.dto.CourseLessonDTO;
 import com.andreas.dto.CourseSectionDTO;
+import com.andreas.vo.CourseLessonVO;
 import com.andreas.vo.CourseSectionVO;
 import com.andreas.vo.CourseVO;
 
@@ -73,4 +75,31 @@ public interface CourseContentService {
      * @Return CourseVO
      */
     CourseVO findCourseById(Integer courseId);
+
+    /**
+     * @Author: andreaszhou
+     * @Description: 更新课时状态
+     * @DateTime: 2021/8/7 17:19
+     * @Params: dto
+     * @Return
+     */
+    void updateLessonStatus(CourseLessonDTO dto);
+
+    /**
+     * @Author: andreaszhou
+     * @Description: 编辑章节信息回显
+     * @DateTime: 2021/8/7 17:32
+     * @Params: courseLessonId
+     * @Return
+     */
+    CourseLessonVO showCourseLesson(Integer courseLessonId);
+
+    /**
+     * @Author: andreaszhou
+     * @Description: 编辑章节信息回显
+     * @DateTime: 2021/8/7 17:52
+     * @Params: dto
+     * @Return
+     */
+    CourseSectionVO showCourseSection(Integer courseSectionId);
 }

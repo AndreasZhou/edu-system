@@ -1,6 +1,6 @@
 package com.andreas.vo;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
@@ -8,14 +8,15 @@ import java.util.List;
 
 /**
  * 菜单类
- * */
+ */
+@Data
 public class MenuVO {
 
     //主键id
     private Integer id;
 
     //父菜单id
-    private int parentId;
+    private Integer parentId;
 
     //菜单路径
     private String href;
@@ -30,13 +31,13 @@ public class MenuVO {
     private String description;
 
     //排序号
-    private int orderNum;
+    private Integer orderNum;
 
     //是否展示
-    private int shown;
+    private Integer shown;
 
     //菜单层级，从0开始
-    private int level;
+    private Integer level;
 
     //创建时间
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
@@ -54,140 +55,4 @@ public class MenuVO {
 
     // 声明集合：当前父级菜单所关联的子级菜单
     private List<MenuVO> subMenuList;
-
-
-    public List<MenuVO> getSubMenuList() {
-        return subMenuList;
-    }
-
-    public void setSubMenuList(List<MenuVO> subMenuList) {
-        this.subMenuList = subMenuList;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public int getParentId() {
-        return parentId;
-    }
-
-    public void setParentId(int parentId) {
-        this.parentId = parentId;
-    }
-
-    public String getHref() {
-        return href;
-    }
-
-    public void setHref(String href) {
-        this.href = href;
-    }
-
-    public String getIcon() {
-        return icon;
-    }
-
-    public void setIcon(String icon) {
-        this.icon = icon;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public int getOrderNum() {
-        return orderNum;
-    }
-
-    public void setOrderNum(int orderNum) {
-        this.orderNum = orderNum;
-    }
-
-    public int getShown() {
-        return shown;
-    }
-
-    public void setShown(int shown) {
-        this.shown = shown;
-    }
-
-    public int getLevel() {
-        return level;
-    }
-
-    public void setLevel(int level) {
-        this.level = level;
-    }
-
-    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
-    public Date getCreatedTime() {
-        return createdTime;
-    }
-
-    public void setCreatedTime(Date createdTime) {
-        this.createdTime = createdTime;
-    }
-
-    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
-    public Date getUpdatedTime() {
-        return updatedTime;
-    }
-
-    public void setUpdatedTime(Date updatedTime) {
-        this.updatedTime = updatedTime;
-    }
-
-    public String getCreatedBy() {
-        return createdBy;
-    }
-
-    public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
-    }
-
-    public String getUpdatedBy() {
-        return updatedBy;
-    }
-
-    public void setUpdatedBy(String updatedBy) {
-        this.updatedBy = updatedBy;
-    }
-
-    @Override
-    public String toString() {
-        return "Menu{" +
-                "id=" + id +
-                ", parentId=" + parentId +
-                ", href='" + href + '\'' +
-                ", icon='" + icon + '\'' +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", orderNum=" + orderNum +
-                ", shown=" + shown +
-                ", level=" + level +
-                ", createdTime=" + createdTime +
-                ", updatedTime=" + updatedTime +
-                ", createdBy='" + createdBy + '\'' +
-                ", updatedBy='" + updatedBy + '\'' +
-                '}';
-    }
 }

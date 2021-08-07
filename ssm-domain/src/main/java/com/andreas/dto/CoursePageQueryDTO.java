@@ -1,8 +1,11 @@
 package com.andreas.dto;
 
+import lombok.Data;
+
 /**
- * 描述：
+ * 描述：CoursePageQueryDTO:参数
  */
+@Data
 public class CoursePageQueryDTO {
     //课程名称
     private String courseName;
@@ -12,36 +15,4 @@ public class CoursePageQueryDTO {
     private Integer pageNum;
     // 页大小
     private Integer pageSize;
-
-    public String getCourseName() {
-        return courseName;
-    }
-
-    public void setCourseName(String courseName) {
-        this.courseName = courseName;
-    }
-
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
-
-    public Integer getPageNum() {
-        return pageNum;
-    }
-
-    public void setPageNum(Integer pageNum) {
-        this.pageNum = pageNum;
-    }
-
-    public Integer getPageSize() {
-        return pageSize;
-    }
-
-    public void setPageSize(Integer pageSize) {
-        this.pageSize = pageSize;
-    }
 }

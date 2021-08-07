@@ -1,15 +1,16 @@
 package com.andreas.controller;
 
-import com.andreas.domain.ResponseResult;
 import com.andreas.dto.CourseLessonDTO;
 import com.andreas.dto.CourseSectionDTO;
 import com.andreas.service.CourseContentService;
+import com.andreas.vo.CourseLessonVO;
 import com.andreas.vo.CourseSectionVO;
 import com.andreas.vo.CourseVO;
+import com.andreas.vo.ResponseResultVO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -25,18 +26,18 @@ public class CourseContentController {
 
     /**
      * @Author: andreaszhou
-     * @Description: 根据课程id查找对应的课程的章节和课程的信息
+     * @Description: 根据课程id查找对应的课程的章节和课时的信息
      * @DateTime: 2021/7/21 14:47
      * @Params: courseId
      * @Return
      */
-    @RequestMapping("/findSectionAndLesson")
-    public ResponseResult findSectionAndLesson(@RequestParam("id") Integer courseId) {
+    @RequestMapping("/findSectionAndLesson/{courseId}")
+    public ResponseResultVO findSectionAndLesson(@PathVariable Integer courseId) {
         if (courseId == null) {
-            return new ResponseResult(false, 300, "参数传递有误", null);
+            return new ResponseResultVO(false, 300, "参数传递有误", null);
         }
         List<CourseSectionVO> courseSectionVOS = courseContentService.findSectionAndLesson(courseId);
-        return new ResponseResult(true, 200, "响应成功", courseSectionVOS);
+        return new ResponseResultVO(true, 200, "响应成功", courseSectionVOS);
     }
 
     /**
@@ -47,25 +48,51 @@ public class CourseContentController {
      * @Return
      */
     @RequestMapping("/updateSectionStatus")
-    public ResponseResult updateSectionStatus(@RequestBody CourseSectionDTO dto) {
+    public ResponseResultVO updateSectionStatus(@RequestBody CourseSectionDTO dto) {
         if (dto.getId() == null) {
-            return new ResponseResult(false, 300, "参数传递有误", null);
+            return new ResponseResultVO(false, 300, "参数传递有误", null);
         }
         courseContentService.updateSectionStatus(dto);
-        return new ResponseResult(true, 200, "修改成功", null);
+        return new ResponseResultVO(true, 200, "修改成功", null);
     }
 
     /**
      * @Author: andreaszhou
-     * @Description: 回显章节对应的课程信息，回显章节对应的课程信息
+     * @Description: 根据课程id查找对应的课程信息 获取对应的id和name
      * @DateTime: 2021/7/28 18:46
      * @Params: courseId
      * @Return responseResult
      */
-    @RequestMapping("findCourseById")
-    public ResponseResult findCourseById(@RequestParam("courseId") Integer courseId) {
+    @RequestMapping("/findCourseByCourseId/{courseId}")
+    public ResponseResultVO findCourseById(@PathVariable Integer courseId) {
         CourseVO courseVO = courseContentService.findCourseById(courseId);
-        return new ResponseResult(true, 200, "响应成功", courseVO);
+        return new ResponseResultVO(true, 200, "响应成功", courseVO);
+    }
+
+    /**
+     * @Author: andreaszhou
+     * @Description: 编辑章节信息回显  根据课程章节id查找对应的课程章节信息
+     * @DateTime: 2021/8/7 17:52
+     * @Params: dto
+     * @Return
+     */
+    @RequestMapping("showCourseSection/{courseSectionId}")
+    public ResponseResultVO showCourseSection(@PathVariable Integer courseSectionId) {
+        CourseSectionVO courseSectionVO = courseContentService.showCourseSection(courseSectionId);
+        return new ResponseResultVO(true, 200, "响应成功", courseSectionVO);
+    }
+
+    /**
+     * @Author: andreaszhou
+     * @Description: 编辑课时信息回显  根据课程课时id查找对应的课程课时信息
+     * @DateTime: 2021/8/7 17:32
+     * @Params: courseLessonId
+     * @Return
+     */
+    @RequestMapping("/showCourseLesson/{courseLessonId}")
+    public ResponseResultVO showCourseLesson(@PathVariable Integer courseLessonId) {
+        CourseLessonVO courseLessonVO = courseContentService.showCourseLesson(courseLessonId);
+        return new ResponseResultVO(true, 200, "响应成功", courseLessonVO);
     }
 
     /**
@@ -73,34 +100,59 @@ public class CourseContentController {
      * @Description: 新建&修改章节信息
      * @DateTime: 2021/7/21 21:33
      * @Params: dto
-     * @Return ResponseResult
+     * @Return ResponseResultVO
      */
-    @RequestMapping("saveOrUpdateSection")
-    public ResponseResult saveOrUpdateSection(@RequestBody CourseSectionDTO dto) {
+    @RequestMapping("/saveOrUpdateSection")
+    public ResponseResultVO saveOrUpdateSection(@RequestBody CourseSectionDTO dto) {
         if (dto.getId() != null) {
             courseContentService.updateSection(dto);
-            return new ResponseResult(true, 200, "修改成功", null);
+            return new ResponseResultVO(true, 200, "修改成功", null);
         } else {
             courseContentService.saveSection(dto);
-            return new ResponseResult(true, 200, "保存成功", null);
+            return new ResponseResultVO(true, 200, "保存成功", null);
         }
     }
 
     /**
      * @Author: andreaszhou
-     * @Description: TODO
+     * @Description: 新建/修改课时信息
      * @DateTime: 2021/7/21 21:29
-     * @Params: 新建/修改课时信息
+     * @Params: dto
      * @Return
      */
     @RequestMapping("/saveOrUpdateLesson")
-    public ResponseResult saveOrUpdateLesson(@RequestBody CourseLessonDTO dto) {
+    public ResponseResultVO saveOrUpdateLesson(@RequestBody CourseLessonDTO dto) {
         if (dto.getId() != null) {
             courseContentService.updateLesson(dto);
-            return new ResponseResult(true, 200, "修改成功", null);
+            return new ResponseResultVO(true, 200, "修改成功", null);
         } else {
             courseContentService.saveLesson(dto);
-            return new ResponseResult(true, 200, "保存成功", null);
+            return new ResponseResultVO(true, 200, "保存成功", null);
         }
+    }
+
+    /**
+     * @Author: andreaszhou
+     * @Description: 更新课时状态
+     * @DateTime: 2021/8/7 17:19
+     * @Params: dto
+     * @Return
+     */
+    @RequestMapping("/updateLessonStatus")
+    public ResponseResultVO updateLessonStatus(@RequestBody CourseLessonDTO dto) {
+        courseContentService.updateLessonStatus(dto);
+        return new ResponseResultVO(true, 200, "修改成功", null);
+    }
+
+    /**
+     * @Author: andreaszhou
+     * @Description: 上传视频
+     * @DateTime: 2021/8/7 18:23
+     * @Params:
+     * @Return
+     */
+    @RequestMapping("/uploadVideo")
+    public ResponseResultVO uploadVideo() {
+        return new ResponseResultVO(true, 200, "响应成功", null);
     }
 }

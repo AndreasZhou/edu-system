@@ -1,7 +1,7 @@
 package com.andreas.controller;
 
 import com.andreas.domain.Menu;
-import com.andreas.domain.ResponseResult;
+import com.andreas.vo.ResponseResultVO;
 import com.andreas.dto.MenuDTO;
 import com.andreas.service.MenuService;
 import com.andreas.vo.MenuVO;
@@ -34,9 +34,9 @@ public class MenuController {
      * @Return
      */
     @RequestMapping("findAllMenu")
-    public ResponseResult findAllMenu(@Param("currentPage") Integer currentPage, @Param("pageSize") Integer pageSize) {
+    public ResponseResultVO findAllMenu(@Param("currentPage") Integer currentPage, @Param("pageSize") Integer pageSize) {
         PageInfo<MenuVO> pageInfo = menuService.findAllMenu(currentPage, pageSize);
-        return new ResponseResult(null, 200, "响应成功", pageInfo);
+        return new ResponseResultVO(null, 200, "响应成功", pageInfo);
     }
 
     /**
@@ -49,7 +49,7 @@ public class MenuController {
      * @Return
      */
     @RequestMapping("findMenuInfoById")
-    public ResponseResult findMenuInfoById(@Param("id") Integer id) {
+    public ResponseResultVO findMenuInfoById(@Param("id") Integer id) {
         // 根据id的值判断当前是更新还是添加操作，判断id的值是否为-1
         if (id == -1) {
             // 添加  回显信息中不需要查询menu信息
@@ -58,7 +58,7 @@ public class MenuController {
             Map<String, Object> map = new HashMap<>();
             map.put("menuInfo", null);
             map.put("parentMenuList", subMenuListByPid);
-            return new ResponseResult(true, 200, "添加回显成功", map);
+            return new ResponseResultVO(true, 200, "添加回显成功", map);
         } else {
             // 修改操作 回显所有menu信息
             Menu menu = menuService.findMenuById(id);
@@ -67,7 +67,7 @@ public class MenuController {
             Map<String, Object> map = new HashMap<>();
             map.put("menuInfo", menu);
             map.put("parentMenuList", subMenuListByPid);
-            return new ResponseResult(true, 200, "响应成功", map);
+            return new ResponseResultVO(true, 200, "响应成功", map);
         }
     }
 
@@ -79,13 +79,13 @@ public class MenuController {
      * @Return
      */
     @RequestMapping("saveOrUpdateMenu")
-    public ResponseResult saveOrUpdateMenu(@RequestBody MenuDTO dto) {
+    public ResponseResultVO saveOrUpdateMenu(@RequestBody MenuDTO dto) {
         if (dto.getId() != null) {
             menuService.updateMenu(dto);
-            return new ResponseResult(true, 200, "修改成功", null);
+            return new ResponseResultVO(true, 200, "修改成功", null);
         } else {
             menuService.saveMenu(dto);
-            return new ResponseResult(true, 200, "保存成功", null);
+            return new ResponseResultVO(true, 200, "保存成功", null);
         }
     }
 
@@ -97,9 +97,9 @@ public class MenuController {
      * @Return
      */
     @RequestMapping("deleteMenu")
-    public ResponseResult deleteMenu(@RequestParam("id") Integer id) {
+    public ResponseResultVO deleteMenu(@RequestParam("id") Integer id) {
         menuService.deleteMenu(id);
-        return new ResponseResult(true, 200, "删除成功", null);
+        return new ResponseResultVO(true, 200, "删除成功", null);
     }
 
 }

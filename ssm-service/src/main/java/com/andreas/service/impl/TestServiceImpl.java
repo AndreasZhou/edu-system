@@ -17,7 +17,6 @@ public class TestServiceImpl implements TestService {
     private TestMapper testMapper;
     @Override
     public List<Test> findAllTest() {
-        List<Test> allTest = testMapper.findAllTest();
-        return allTest;
+        return testMapper.findAllTest();
     }
 }

@@ -1,10 +1,15 @@
 package com.andreas.service.impl;
 
 import com.andreas.dao.UserMapper;
+import com.andreas.vo.ResponseResultVO;
+import com.andreas.domain.Role;
 import com.andreas.domain.User;
+import com.andreas.domain.User_Role_relation;
 import com.andreas.dto.UserDTO;
+import com.andreas.dto.UserRoleDTO;
 import com.andreas.service.UserService;
 import com.andreas.utils.MD5;
+import com.andreas.vo.RoleVO;
 import com.andreas.vo.UserVO;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -13,6 +18,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -65,6 +72,64 @@ public class UserServiceImpl implements UserService {
         if (userLogin != null && MD5.verify(user.getPassword(), "lagou", userLogin.getPassword())) {
             return userLogin;
         }
+        return null;
+    }
+
+    /**
+     * @Author: andreaszhou
+     * @Description: 分配角色回显
+     * @DateTime: 2021/8/1 21:43
+     * @Params:
+     * @Return
+     */
+    @Override
+    public List<RoleVO> findUserRoleById(Integer id) {
+        List<Role> roles = userMapper.findUserRoleById(id);
+        List<RoleVO> roleVOS = new ArrayList<>();
+        for (Role r : roles
+        ) {
+            RoleVO roleVO = new RoleVO();
+            BeanUtils.copyProperties(r, roleVO);
+            roleVOS.add(roleVO);
+        }
+        return roleVOS;
+    }
+
+    /**
+     * @Author: andreaszhou
+     * @Description: 根据用户的id分配对应的角色
+     * @DateTime: 2021/8/1 22:13
+     * @Params:
+     * @Return
+     */
+    @Override
+    public void userContextRole(UserRoleDTO dto) {
+        // 根据用户ID清空中间表的关联关系
+        userMapper.deleteUserContextRole(dto.getUserId());
+        // 向中间表添加记录
+        for (Integer roleId: dto.getRoleIdList()){
+            User_Role_relation user_role_relation = new User_Role_relation();
+            user_role_relation.setUserId(dto.getUserId());
+            user_role_relation.setRoleId(roleId);
+            Date date = new Date();
+            user_role_relation.setCreatedTime(date);
+            user_role_relation.setUpdatedTime(date);
+            user_role_relation.setCreatedBy("system");
+            user_role_relation.setUpdatedBy("system");
+            userMapper.userContextRole(user_role_relation);
+        }
+    }
+
+    /**
+     * @Author: andreaszhou
+     * @Description: 获取用户权限
+     * @DateTime: 2021/8/1 23:14
+     * @Params:
+     * @Return
+     */
+    @Override
+    public ResponseResultVO getUserPermissions(Integer user_id) {
+        // 1.获取当前用户拥有的角色
         return null;
     }
 }

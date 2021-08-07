@@ -18,7 +18,7 @@ public interface PromotionSpaceMapper {
      * @Params:
      * @Return
      */
-    List<PromotionSpaceVO> findAllPromotionSpace();
+    List<PromotionSpace> findAllPromotionSpace();
     /**
      * @Author: andreaszhou
      * @Description: 编辑广告位
@@ -26,7 +26,7 @@ public interface PromotionSpaceMapper {
      * @Params:
      * @Return
      */
-    void updatePromotionSpace(@Param("dto") PromotionSpaceDTO dto);
+    void updatePromotionSpace(@Param("promotionSpace") PromotionSpace promotionSpace);
     /**
      * @Author: andreaszhou
      * @Description: 添加广告位
@@ -34,7 +34,7 @@ public interface PromotionSpaceMapper {
      * @Params:
      * @Return
      */
-    void savePromotionSpace(@Param("dto") PromotionSpaceDTO dto);
+    void savePromotionSpace(@Param("promotionSpace") PromotionSpace promotionSpace);
     /**
      * @Author: andreaszhou
      * @Description: 修改操作，回显广告位

@@ -4,6 +4,7 @@
 <mapper namespace="com.andreas.dao.TestMapper">
     <!--对test表进行查询操作-->
     <select id="findAllTest" resultType="com.andreas.domain.Test">
-        select * from test;
+        select id, name
+        from test;
     </select>
 </mapper>

@@ -66,4 +66,13 @@
             </if>
         </where>
     </select>
+
+    <update id="deleteResourceCategoryId" parameterType="java.lang.Integer">
+        update resource set category_id = null
+        <where>
+            <if test="id != null and id != ''">
+                category_id = #{id}
+            </if>
+        </where>
+    </update>
 </mapper>

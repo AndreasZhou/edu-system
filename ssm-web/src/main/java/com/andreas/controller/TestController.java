@@ -21,7 +21,6 @@ public class TestController {
 
     @RequestMapping("/findAllTest")
     public List<Test> findAllTest() {
-        List<Test> allTest = testService.findAllTest();
-        return allTest;
+        return testService.findAllTest();
     }
 }

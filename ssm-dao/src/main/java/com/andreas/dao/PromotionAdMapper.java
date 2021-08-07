@@ -1,8 +1,6 @@
 package com.andreas.dao;
 
 import com.andreas.domain.PromotionAd;
-import com.andreas.dto.PromotionAdDTO;
-import com.andreas.dto.PromotionAdPageInfoDTO;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -18,7 +16,8 @@ public interface PromotionAdMapper {
      * @Params: dto
      * @Return
      */
-    List<PromotionAd> findAllPromotionAdByPage(@Param("dto") PromotionAdPageInfoDTO dto);
+    List<PromotionAd> findAllPromotionAdByPage();
+
     /**
      * @Author: andreaszhou
      * @Description: 修改广告
@@ -26,7 +25,8 @@ public interface PromotionAdMapper {
      * @Params:
      * @Return
      */
-    void updatePromotionAd(@Param("dto") PromotionAdDTO dto);
+    void updatePromotionAd(@Param("promotionAd") PromotionAd promotionAd);
+
     /**
      * @Author: andreaszhou
      * @Description: 新建广告
@@ -34,15 +34,17 @@ public interface PromotionAdMapper {
      * @Params:
      * @Return
      */
-    void savePromotionAd(@Param("dto") PromotionAdDTO dto);
+    void savePromotionAd(@Param("promotionAd") PromotionAd promotionAd);
+
     /**
      * @Author: andreaszhou
-     * @Description: 接收广告ID,返回广告详细信息
+     * @Description: 接收广告ID, 返回广告详细信息
      * @DateTime: 2021/7/23 14:37
      * @Params:
      * @Return
      */
-    PromotionAd findPromotionAdById(@Param("dto") Integer id);
+    PromotionAd findPromotionAdById(@Param("id") Integer id);
+
     /**
      * @Author: andreaszhou
      * @Description: 广告状态上下线
@@ -50,5 +52,6 @@ public interface PromotionAdMapper {
      * @Params:
      * @Return
      */
-    void updatePromotionAdStatus(@Param("dto") PromotionAdDTO dto);
+    void updatePromotionAdStatus(@Param("promotionAd") PromotionAd promotionAd);
+
 }

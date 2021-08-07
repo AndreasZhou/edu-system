@@ -1,130 +1,51 @@
 package com.andreas.vo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.util.Date;
 
 /**
  * 课时类
- * */
+ */
+@Data
 public class CourseLessonVO {
 
     //主键
     private Integer id;
 
     //课程id
-    private int courseId;
+    private Integer courseId;
 
     //章节id
-    private int sectionId;
+    private Integer sectionId;
 
     //课时主题
     private String theme;
 
     //课时时长
-    private int duration;
+    private Integer duration;
 
     //是否免费
-    private int isFree;
+    private Integer isFree;
 
     //创建时间
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;
 
     //修改时间
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updateTime;
 
     //是否删除
-    private int isDel;
+    private Integer isDel;
 
     //排序
-    private int orderNum;
+    private Integer orderNum;
 
     //状态
-    private int status;
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public int getCourseId() {
-        return courseId;
-    }
-
-    public void setCourseId(int courseId) {
-        this.courseId = courseId;
-    }
-
-    public int getSectionId() {
-        return sectionId;
-    }
-
-    public void setSectionId(int sectionId) {
-        this.sectionId = sectionId;
-    }
-
-    public String getTheme() {
-        return theme;
-    }
-
-    public void setTheme(String theme) {
-        this.theme = theme;
-    }
-
-    public int getDuration() {
-        return duration;
-    }
-
-    public void setDuration(int duration) {
-        this.duration = duration;
-    }
-
-    public int getIsFree() {
-        return isFree;
-    }
-
-    public void setIsFree(int isFree) {
-        this.isFree = isFree;
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public Date getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
-    }
-
-    public int getIsDel() {
-        return isDel;
-    }
-
-    public void setIsDel(int isDel) {
-        this.isDel = isDel;
-    }
-
-    public int getOrderNum() {
-        return orderNum;
-    }
-
-    public void setOrderNum(int orderNum) {
-        this.orderNum = orderNum;
-    }
-
-    public int getStatus() {
-        return status;
-    }
-
-    public void setStatus(int status) {
-        this.status = status;
-    }
+    private Integer status;
 }

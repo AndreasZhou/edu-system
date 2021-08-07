@@ -2,65 +2,90 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.andreas.dao.PromotionAdMapper">
-    <select id="findAllPromotionAdByPage" parameterType="com.andreas.dto.PromotionAdPageInfoDTO"
+    <!--查询所有的广告-->
+    <select id="findAllPromotionAdByPage"
             resultType="com.andreas.domain.PromotionAd">
-        select *
-        from promotion_ad;
+        SELECT `id`,
+               `name`,
+               spaceId     spaceId,
+               keyword     keyword,
+               htmlContent htmlContent,
+               `text`,
+               `link`,
+               startTime   startTime,
+               endTime     endTime,
+               createTime  createTime,
+               updateTime  updateTime,
+               `status`,
+               `priority`,
+               `img`
+        FROM promotion_ad
     </select>
-    <update id="updatePromotionAd" parameterType="com.andreas.dto.PromotionAdDTO">
+
+    <update id="updatePromotionAd" parameterType="com.andreas.domain.PromotionAd">
         update promotion_ad
         <trim prefix="set" suffixOverrides=",">
-            <if test="dto.name != null and dto.name != '' ">
-                name = #{dto.name},
+            <if test="promotionAd.name != null and promotionAd.name != '' ">
+                name = #{promotionAd.name},
             </if>
-            <if test="dto.spaceId != null and dto.spaceId != '' ">
-                spaceId = #{dto.spaceId},
+            <if test="promotionAd.spaceId != null and promotionAd.spaceId != '' ">
+                spaceId = #{promotionAd.spaceId},
             </if>
-            <if test="dto.startTime != null and dto.startTime != '' ">
-                startTime = #{dto.startTime},
+            <if test="promotionAd.startTime != null">
+                startTime = #{promotionAd.startTime},
             </if>
-            <if test="dto.endTime != null and dto.status != '' ">
-                endTime = #{dto.endTime},
+            <if test="promotionAd.endTime != null">
+                endTime = #{promotionAd.endTime},
             </if>
-            <if test="dto.updateTime != null and dto.updateTime != '' ">
-                updateTime = #{dto.updateTime},
+            <if test="promotionAd.updateTime != null ">
+                updateTime = #{promotionAd.updateTime},
             </if>
-            <if test="dto.status != null and dto.status != '' ">
-                status = #{dto.status},
+            <if test="promotionAd.status != null and promotionAd.status != '' or promotionAd.status == 0 ">
+                status = #{promotionAd.status},
             </if>
-            <if test="dto.img != null and dto.img = '' ">
-                img = #{dto.img},
+            <if test="promotionAd.img != null and promotionAd.img = '' ">
+                img = #{promotionAd.img},
             </if>
-            <if test="dto.link != null and dto.link != '' ">
-                link = #{dto.link},
+            <if test="promotionAd.link != null and promotionAd.link != '' ">
+                link = #{promotionAd.link},
             </if>
-            <if test="dto.text != null and dto.text != '' ">
-                text = #{dto.text}
+            <if test="promotionAd.text != null and promotionAd.text != '' ">
+                text = #{promotionAd.text}
             </if>
         </trim>
+        <where>
+            <if test="promotionAd.id != null and promotionAd.id != '' ">
+                id = #{promotionAd.id}
+            </if>
+        </where>
     </update>
-    <insert id="savePromotionAd" parameterType="com.andreas.dto.PromotionAdDTO">
-        insert into promotion_ad (name, spaceId, startTime, endTime, createTime, updateTime, status, img, link, text)
-        values (#{dto.name}, #{dto.spaceId}, #{dto.startTime}, #{dto.endTime}, #{dto.createTime}, #{dto.updateTime},
-                #{dto.status}, #{dto.img}, #{dto.link},
-                #{dto.text})
+
+    <insert id="savePromotionAd" parameterType="com.andreas.domain.PromotionAd">
+        insert into promotion_ad (`name`, spaceId, startTime, endTime, createTime, updateTime, status, img, link, text)
+        values (#{promotionAd.name}, #{promotionAd.spaceId}, #{promotionAd.startTime}, #{promotionAd.endTime},
+                #{promotionAd.createTime}, #{promotionAd.updateTime},
+                #{promotionAd.status}, #{promotionAd.img}, #{promotionAd.link},
+                #{promotionAd.text})
     </insert>
+
     <select id="findPromotionAdById" resultType="com.andreas.domain.PromotionAd">
         select *
         from promotion_ad
         where id = #{id};
     </select>
-    <update id="updatePromotionAdStatus" parameterType="com.andreas.dto.PromotionAdDTO">
+    <!--更新广告位状态-->
+    <update id="updatePromotionAdStatus" parameterType="com.andreas.domain.PromotionAd">
         update promotion_ad
         <trim prefix="set" suffixOverrides=",">
-            <if test="dto.status != null and dto.status != '' ">
-                status = #{dto.status}
+            <if test="promotionAd.status != null and promotionAd.status != '' or promotionAd.status == 0">
+                status = #{promotionAd.status},
             </if>
         </trim>
         <where>
-            <if test="dto.id != null and dto.id != '' ">
-                id = #{dto.id}
+            <if test="promotionAd.id != null and promotionAd.id != '' ">
+                id = #{promotionAd.id}
             </if>
         </where>
     </update>
+
 </mapper>

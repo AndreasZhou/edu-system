@@ -1,13 +1,19 @@
 package com.andreas.domain;
 
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
+@Data
+@TableName("promotion_ad")
 public class PromotionAd {
 
     // 标识
+    @TableId("id")
     private Integer id;
     // 广告名
     private String name;
@@ -22,161 +28,25 @@ public class PromotionAd {
     // 链接一
     private String link;
     // 开始时间
-
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date startTime;
     // 结束时间
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date endTime;
+    // 创建时间
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;
+    // 更新时间
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updateTime;
+    // 广告状态：0下线 1上线
     private Integer status;
     // 优先级
     private Integer priority;
+    // 广告图片地址
     private String img;
-
-    //声明一方关系：PromotionSpace
-    private PromotionSpace promotionSpace;
-
-    public PromotionSpace getPromotionSpace() {
-        return promotionSpace;
-    }
-
-    public void setPromotionSpace(PromotionSpace promotionSpace) {
-        this.promotionSpace = promotionSpace;
-    }
-
-    public String getText() {
-        return text;
-    }
-
-    public void setText(String text) {
-        this.text = text;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Integer getSpaceId() {
-        return spaceId;
-    }
-
-    public void setSpaceId(Integer spaceId) {
-        this.spaceId = spaceId;
-    }
-
-    public String getKeyword() {
-        return keyword;
-    }
-
-    public void setKeyword(String keyword) {
-        this.keyword = keyword;
-    }
-
-    public String getHtmlContent() {
-        return htmlContent;
-    }
-
-    public void setHtmlContent(String htmlContent) {
-        this.htmlContent = htmlContent;
-    }
-
-    public String getLink() {
-        return link;
-    }
-
-    public void setLink(String link) {
-        this.link = link;
-    }
-
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    public Date getStartTime() {
-        return startTime;
-    }
-
-    public void setStartTime(Date startTime) {
-        this.startTime = startTime;
-    }
-
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    public Date getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(Date endTime) {
-        this.endTime = endTime;
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public Date getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
-    }
-
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
-
-    public Integer getPriority() {
-        return priority;
-    }
-
-    public void setPriority(Integer priority) {
-        this.priority = priority;
-    }
-
-    public String getImg() {
-        return img;
-    }
-
-    public void setImg(String img) {
-        this.img = img;
-    }
-
-    @Override
-    public String toString() {
-        return "PromotionAd{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", spaceId=" + spaceId +
-                ", keyword='" + keyword + '\'' +
-                ", htmlContent='" + htmlContent + '\'' +
-                ", text='" + text + '\'' +
-                ", link='" + link + '\'' +
-                ", startTime=" + startTime +
-                ", endTime=" + endTime +
-                ", createTime=" + createTime +
-                ", updateTime=" + updateTime +
-                ", status=" + status +
-                ", priority=" + priority +
-                ", img='" + img + '\'' +
-                '}';
-    }
 }

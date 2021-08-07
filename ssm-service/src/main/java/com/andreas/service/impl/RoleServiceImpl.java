@@ -134,7 +134,7 @@ public class RoleServiceImpl implements RoleService {
             role_menu_relation.setCreatedTime(date);
             role_menu_relation.setUpdatedTime(date);
             role_menu_relation.setCreatedBy("system");
-            role_menu_relation.setUpdatedby("system");
+            role_menu_relation.setCreatedBy("system");
             roleMapper.roleContextMenu(role_menu_relation);
         }
     }

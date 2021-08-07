@@ -1,73 +1,24 @@
 package com.andreas.vo;
 
+import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.util.Date;
 
+@Data
 public class PromotionSpaceVO {
-
+    // 广告位id
     private Integer id;
+    // 广告位名称
     private String name;
+    // 广告位key
     private String spaceKey;
+    // 创建时间
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;
+    // 更新时间
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updateTime;
+    // 是否删除 0表示未删除 1表示删除
     private Integer isDel;
-
-    @Override
-    public String toString() {
-        return "PromotionSpace{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", spaceKey='" + spaceKey + '\'' +
-                ", createTime=" + createTime +
-                ", updateTime=" + updateTime +
-                ", isDel=" + isDel +
-                '}';
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getSpaceKey() {
-        return spaceKey;
-    }
-
-    public void setSpaceKey(String spaceKey) {
-        this.spaceKey = spaceKey;
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public Date getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
-    }
-
-    public Integer getIsDel() {
-        return isDel;
-    }
-
-    public void setIsDel(Integer isDel) {
-        this.isDel = isDel;
-    }
 }

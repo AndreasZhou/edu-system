@@ -2,22 +2,35 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.andreas.dao.CourseMapper">
-    <!--对test表进行查询操作-->
+    <!--根据条件查找对应的课程信息-->
     <select id="findCourseByCondition" resultType="com.andreas.domain.Course"
-            parameterType="com.andreas.domain.CoursePageQuery">
-        select * from course
+            parameterType="com.andreas.bo.CourseBO">
+        select id, course_name courseName,
+        brief, price, price_tag priceTag,
+        discounts, discounts_tag discountsTag,
+        course_description_mark_down courseDescriptionMarkDown,
+        course_description courseDescription, course_img_url courseImgUrl,
+        is_new isNew, is_new_des isNewDes,
+        last_operator_id lastOperatorId,
+        auto_online_time autoOnlineTime, create_time createTime,
+        update_time updateTime, is_del isDel,
+        total_duration totalDuration, course_list_img courseListImg, status,
+        sort_num sortNum, preview_first_field previewFirstField,
+        preview_second_field previewSecondField, sales
+        from course
         <where>
-            <if test="coursePageQuery.courseName !=null and coursePageQuery.courseName != ''">
-                and course_name like concat('%',#{coursePageQuery.courseName},'%')
+            <if test="courseBO.courseName !=null and courseBO.courseName != ''">
+                and course_name like concat('%',#{courseBO.courseName},'%')
             </if>
-            <if test="coursePageQuery.status !=null and coursePageQuery.status != ''">
-                and status = #{coursePageQuery.status}
+            <if test="courseBO.status !=null and courseBO.status != ''">
+                and status = #{courseBO.status}
             </if>
             <if test="true">
                 and is_del != 1
             </if>
         </where>
     </select>
+    <!--保存课程信息-->
     <insert id="saveCourse" parameterType="com.andreas.domain.Course">
         insert into course (
         course_name,
@@ -41,20 +54,22 @@
         #{course.createTime},#{course.updateTime}
         );
         <!--获取添加成功记录返回的ID值赋值给Course实体中ID属性-->
-        <selectKey resultType="int" order="AFTER" keyProperty="id">
+        <selectKey resultType="int" order="AFTER" keyProperty="course.id">
             select LAST_INSERT_ID()
         </selectKey>
     </insert>
+    <!--保存讲师信息-->
     <insert id="saveTeacher" parameterType="com.andreas.domain.Teacher">
         INSERT INTO teacher(course_id,
                             teacher_name,
-                            POSITION,
+                            `POSITION`,
                             description,
                             create_time,
                             update_time)
         VALUES (#{teacher.courseId}, #{teacher.teacherName}, #{teacher.position}, #{teacher.description},
                 #{teacher.createTime}, #{teacher.updateTime});
     </insert>
+    <!--更新课程信息-->
     <update id="updateCourse">
         UPDATE course
         <trim prefix="SET" suffixOverrides=",">
@@ -87,11 +102,11 @@
             </if>
 
             <if test="course.price != null and course.price != ''">
-                price=#{price},
+                price=#{course.price},
             </if>
 
             <if test="course.discounts != null and course.discounts != ''">
-                discounts=#{discounts},
+                discounts=#{course.discounts},
             </if>
 
             <if test="course.sales != null and course.sales != '' or course.sales==0">
@@ -116,6 +131,7 @@
             <if test="course.id!=null and course.id != '' ">id=#{course.id}</if>
         </where>
     </update>
+    <!--更新讲师信息-->
     <update id="updateTeacher">
         UPDATE teacher
         <trim prefix="SET" suffixOverrides=",">
@@ -139,7 +155,7 @@
             <if test="teacher.courseId != null and teacher.courseId != '' ">course_id = #{teacher.courseId}</if>
         </where>
     </update>
-
+    <!--更新课程状态-->
     <update id="updateCourseStatus">
         update course
         <trim prefix="set" suffixOverrides=",">
@@ -151,14 +167,15 @@
             <if test="course.id!=null and course.id != '' ">id=#{course.id}</if>
         </where>
     </update>
-
-    <select id="findCourseById" parameterType="java.lang.Integer" resultType="com.andreas.domain.Course">
+    <!--通过课程id查询课程信息-->
+    <select id="findCourseById" parameterType="java.lang.Integer" resultType="com.andreas.bo.CourseBO">
         select c.*,
-               t.teacher_name teacher_name,
-               t.position POSITION,
-                t.description     description
-        from course c left join teacher t
-        on c.id = t.courseId
+               t.teacher_name `teacher_name`,
+               t.position     `POSITION`,
+               t.description  `description`
+        from course c
+                 left join teacher t
+                           on c.id = t.course_id
         where c.id = #{id};
     </select>
 </mapper>

@@ -1,0 +1,8 @@
+com\andreas\dao\TestMapper.class
+com\andreas\dao\ResourceMapper.class
+com\andreas\dao\PromotionSpaceMapper.class
+com\andreas\dao\ResourceCategoryMapper.class
+com\andreas\dao\RoleMapper.class
+com\andreas\dao\CourseContentMapper.class
+com\andreas\dao\MenuMapper.class
+com\andreas\dao\PromotionAdMapper.class

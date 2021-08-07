@@ -1,5 +1,6 @@
 package com.andreas.dao;
 
+import com.andreas.bo.CourseSectionBO;
 import com.andreas.domain.Course;
 import com.andreas.domain.CourseLesson;
 import com.andreas.domain.CourseSection;
@@ -18,7 +19,7 @@ public interface CourseContentMapper {
      * @Params: courseId
      * @Return
      */
-    List<CourseSection> findSectionAndLesson(@Param("courseId") Integer courseId);
+    List<CourseSectionBO> findSectionAndLesson(@Param("courseId") Integer courseId);
 
     /**
      * @Author: andreaszhou
@@ -73,4 +74,31 @@ public interface CourseContentMapper {
      * @Return Course
      */
     Course findCourseById(@Param("courseId") Integer courseId);
+
+    /**
+     * @Author: andreaszhou
+     * @Description: 更新课时状态
+     * @DateTime: 2021/8/7 17:19
+     * @Params: dto
+     * @Return
+     */
+    void updateLessonStatus(@Param("courseLesson") CourseLesson courseLesson);
+
+    /**
+     * @Author: andreaszhou
+     * @Description: 编辑章节信息回显
+     * @DateTime: 2021/8/7 17:32
+     * @Params: courseLessonId
+     * @Return
+     */
+    CourseLesson showCourseLesson(@Param("courseLessonId") Integer courseLessonId);
+
+    /**
+     * @Author: andreaszhou
+     * @Description: 编辑章节信息回显
+     * @DateTime: 2021/8/7 17:52
+     * @Params: dto
+     * @Return
+     */
+    CourseSection showCourseSection(@Param("courseSectionId") Integer courseSectionId);
 }

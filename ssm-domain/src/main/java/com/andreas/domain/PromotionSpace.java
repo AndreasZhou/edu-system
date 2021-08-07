@@ -1,73 +1,31 @@
 package com.andreas.domain;
 
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.util.Date;
 
+@Data
+@TableName("promotion_space")
 public class PromotionSpace {
-
+    @TableId("id")
+    // 广告位id
     private Integer id;
+    // 广告位名字
     private String name;
+    // 广告位key
     private String spaceKey;
+    // 创建时间
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;
+    // 更新时间
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updateTime;
+    // 是否删除  0 表示未删除 1表示删除
     private Integer isDel;
-
-    @Override
-    public String toString() {
-        return "PromotionSpace{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", spaceKey='" + spaceKey + '\'' +
-                ", createTime=" + createTime +
-                ", updateTime=" + updateTime +
-                ", isDel=" + isDel +
-                '}';
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getSpaceKey() {
-        return spaceKey;
-    }
-
-    public void setSpaceKey(String spaceKey) {
-        this.spaceKey = spaceKey;
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public Date getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
-    }
-
-    public Integer getIsDel() {
-        return isDel;
-    }
-
-    public void setIsDel(Integer isDel) {
-        this.isDel = isDel;
-    }
 }

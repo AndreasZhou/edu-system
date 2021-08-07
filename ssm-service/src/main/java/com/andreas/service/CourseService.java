@@ -17,7 +17,7 @@ public interface CourseService {
      * @Description: 根据搜索条件查询课程信息
      * @DateTime: 2021/7/21 8:41
      * @Params: dto
-     * @Return: ResponseResult
+     * @Return: ResponseResultVO
      */
     PageInfo<Course> findCourseByCondition(CoursePageQueryDTO dto);
 
@@ -26,7 +26,7 @@ public interface CourseService {
      * @Description: 新建课程
      * @DateTime: 2021/7/21 14:02
      * @Params: dto
-     * @Return: ResponseResult
+     * @Return: ResponseResultVO
      */
     void saveCourseOrTeacher(CourseDTO dto);
 
@@ -35,7 +35,7 @@ public interface CourseService {
      * @Description: 编辑课程
      * @DateTime: 2021/7/21 14:02
      * @Params: dto
-     * @Return: ResponseResult
+     * @Return: ResponseResultVO
      */
     void updateCourseOrTeacher(CourseDTO dto);
 

@@ -1,8 +1,8 @@
 package com.andreas.service.impl;
 
+import com.andreas.bo.CourseBO;
 import com.andreas.dao.CourseMapper;
 import com.andreas.domain.Course;
-import com.andreas.domain.CoursePageQuery;
 import com.andreas.domain.Teacher;
 import com.andreas.dto.CourseDTO;
 import com.andreas.dto.CoursePageQueryDTO;
@@ -31,14 +31,14 @@ public class CourseServiceImpl implements CourseService {
      * @Description: 根据搜索条件查询课程信息
      * @DateTime: 2021/7/21 8:41
      * @Params: dto
-     * @Return: ResponseResult
+     * @Return: ResponseResultVO
      */
     @Override
     public PageInfo<Course> findCourseByCondition(CoursePageQueryDTO dto) {
         PageHelper.startPage(dto.getPageNum(), dto.getPageSize());
-        CoursePageQuery coursePageQuery = new CoursePageQuery();
-        BeanUtils.copyProperties(dto, coursePageQuery);
-        List<Course> courseList = courseMapper.findCourseByCondition(coursePageQuery);
+        CourseBO courseBO = new CourseBO();
+        BeanUtils.copyProperties(dto, courseBO);
+        List<Course> courseList = courseMapper.findCourseByCondition(courseBO);
         return new PageInfo<>(courseList);
     }
 
@@ -47,7 +47,7 @@ public class CourseServiceImpl implements CourseService {
      * @Description: 新建课程
      * @DateTime: 2021/7/21 14:02
      * @Params: dto
-     * @Return: ResponseResult
+     * @Return: ResponseResultVO
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -74,7 +74,7 @@ public class CourseServiceImpl implements CourseService {
      * @Description: 编辑课程
      * @DateTime: 2021/7/21 14:02
      * @Params: dto
-     * @Return: ResponseResult
+     * @Return: ResponseResultVO
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -116,10 +116,11 @@ public class CourseServiceImpl implements CourseService {
      * @Return CourseVO
      */
     @Override
+    @Transactional(readOnly = true)
     public CourseVO findCourseById(Integer id) {
-        Course course = courseMapper.findCourseById(id);
+        CourseBO courseBO = courseMapper.findCourseById(id);
         CourseVO vo = new CourseVO();
-        BeanUtils.copyProperties(course, vo);
+        BeanUtils.copyProperties(courseBO, vo);
         return vo;
     }
 }

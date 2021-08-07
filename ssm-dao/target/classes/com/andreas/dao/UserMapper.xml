@@ -30,4 +30,26 @@
             </if>
         </where>
     </update>
+    <select id="login" resultType="com.andreas.vo.UserVO" parameterType="com.andreas.domain.User">
+        select *
+        from user
+        where phone = #{user.phone}
+    </select>
+    <!--根据用户的id，然后显示对应的Role角色-->
+    <select id="findUserRoleById" resultType="com.andreas.domain.Role">
+        SELECT r.*
+        from `user` u
+                 left JOIN user_role_relation ur on u.id = ur.user_id
+                 left join roles r on ur.role_id = r.id
+        where u.id = #{id};
+    </select>
+    <delete id="deleteUserContextRole">
+        delete
+        from user_role_relation
+        where user_id = #{userId}
+    </delete>
+    <insert id="userContextRole">
+        insert into user_role_relation (user_id, role_id, created_time, updated_time, created_by, updated_by)
+        values (#{userId}, #{roleId}, # {createdTime}, #{updatedTime}, #{createdBy}, #{updatedBy})
+    </insert>
 </mapper>

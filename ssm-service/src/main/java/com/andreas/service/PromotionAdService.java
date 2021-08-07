@@ -3,6 +3,7 @@ package com.andreas.service;
 import com.andreas.domain.PromotionAd;
 import com.andreas.dto.PromotionAdDTO;
 import com.andreas.dto.PromotionAdPageInfoDTO;
+import com.andreas.vo.PromotionAdVO;
 import com.github.pagehelper.PageInfo;
 
 /**
@@ -16,7 +17,8 @@ public interface PromotionAdService {
      * @Params: dto
      * @Return
      */
-    PageInfo<PromotionAd> findAllPromotionAdByPage(PromotionAdPageInfoDTO dto);
+    PageInfo<PromotionAdVO> findAllPromotionAdByPage(PromotionAdPageInfoDTO dto);
+
     /**
      * @Author: andreaszhou
      * @Description: 修改广告位
@@ -25,6 +27,7 @@ public interface PromotionAdService {
      * @Return
      */
     void updatePromotionAd(PromotionAdDTO dto);
+
     /**
      * @Author: andreaszhou
      * @Description: 新建广告位
@@ -33,14 +36,16 @@ public interface PromotionAdService {
      * @Return
      */
     void savePromotionAd(PromotionAdDTO dto);
+
     /**
      * @Author: andreaszhou
-     * @Description: 接收广告ID,返回广告详细信息
+     * @Description: 接收广告ID, 返回广告详细信息
      * @DateTime: 2021/7/23 14:37
      * @Params:
      * @Return
      */
     PromotionAd findPromotionAdById(Integer id);
+
     /**
      * @Author: andreaszhou
      * @Description: 广告状态上下线
@@ -49,4 +54,6 @@ public interface PromotionAdService {
      * @Return
      */
     void updatePromotionAdStatus(PromotionAdDTO dto);
+
+
 }

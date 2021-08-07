@@ -39,7 +39,7 @@
     <delete id="deleteResourceCategory" parameterType="java.lang.Integer">
         delete
         from resource_category
-        where id != #{id}
+        where id = #{id}
     </delete>
 
     <select id="showResourceCategoryById" parameterType="java.lang.Integer"

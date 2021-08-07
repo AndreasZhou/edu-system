@@ -1,6 +1,6 @@
 package com.andreas.controller;
 
-import com.andreas.domain.ResponseResult;
+import com.andreas.vo.ResponseResultVO;
 import com.andreas.dto.RoleDTO;
 import com.andreas.dto.RoleMenuDTO;
 import com.andreas.dto.RoleResourceDTO;
@@ -37,9 +37,9 @@ public class RoleController {
      * @Return
      */
     @RequestMapping("/findAllRole")
-    public ResponseResult findAllRole(@RequestBody RoleDTO dto) {
+    public ResponseResultVO findAllRole(@RequestBody RoleDTO dto) {
         List<RoleVO> vos = roleService.findAllRole(dto);
-        return new ResponseResult(true, 200, "查询所有角色成功", vos);
+        return new ResponseResultVO(true, 200, "查询所有角色成功", vos);
     }
 
     /**
@@ -50,13 +50,13 @@ public class RoleController {
      * @Return
      */
     @RequestMapping("saveOrUpdateRole")
-    public ResponseResult saveOrUpdateRole(@RequestBody RoleDTO dto) {
+    public ResponseResultVO saveOrUpdateRole(@RequestBody RoleDTO dto) {
         if (dto.getId() != null) {
             roleService.updateRole(dto);
-            return new ResponseResult(true, 200, "响应成功", null);
+            return new ResponseResultVO(true, 200, "响应成功", null);
         } else {
             roleService.saveRole(dto);
-            return new ResponseResult(true, 200, "响应成功", null);
+            return new ResponseResultVO(true, 200, "响应成功", null);
         }
     }
 
@@ -69,9 +69,9 @@ public class RoleController {
      * @Return
      */
     @RequestMapping("deleteRole")
-    public ResponseResult deleteRole(@RequestParam("id") Integer id) {
+    public ResponseResultVO deleteRole(@RequestParam("id") Integer id) {
         roleService.deleteRole(id);
-        return new ResponseResult(true, 200, "响应成功", null);
+        return new ResponseResultVO(true, 200, "响应成功", null);
     }
 
     /**
@@ -82,13 +82,13 @@ public class RoleController {
      * @Return
      */
     @RequestMapping("/findAllMenu")
-    public ResponseResult findSubMenuListByPid() {
+    public ResponseResultVO findSubMenuListByPid() {
         // -1 表示查询所有的父子级菜单
         List<MenuVO> menuVOList = menuService.findSubMenuListByPid(-1);
         // 相应数据
         Map<String, Object> map = new HashMap<>();
         map.put("parentMenuList", menuVOList);
-        return new ResponseResult(null, 200, "查询所有的父子菜单信息成功", map);
+        return new ResponseResultVO(null, 200, "查询所有的父子菜单信息成功", map);
     }
 
     /**
@@ -99,9 +99,9 @@ public class RoleController {
      * @Return
      */
     @RequestMapping("findMenuByRoleId")
-    public ResponseResult findMenuByRoleId(@RequestParam("roleId") Integer roleId) {
+    public ResponseResultVO findMenuByRoleId(@RequestParam("roleId") Integer roleId) {
         List<Integer> menuByRoleId = roleService.findMenuByRoleId(roleId);
-        return new ResponseResult(true, 200, "响应成功", menuByRoleId);
+        return new ResponseResultVO(true, 200, "响应成功", menuByRoleId);
     }
 
     /**
@@ -113,9 +113,9 @@ public class RoleController {
      * @Return
      */
     @RequestMapping("roleContextMenu")
-    public ResponseResult roleContextMenu(@RequestBody RoleMenuDTO dto) {
+    public ResponseResultVO roleContextMenu(@RequestBody RoleMenuDTO dto) {
         roleService.roleContextMenu(dto);
-        return new ResponseResult(true, 200, "响应成功", null);
+        return new ResponseResultVO(true, 200, "响应成功", null);
     }
 
     /**
@@ -126,8 +126,8 @@ public class RoleController {
      * @Return
      */
     @RequestMapping("roleContextResource")
-    public ResponseResult roleContextResource(@RequestBody RoleResourceDTO dto){
+    public ResponseResultVO roleContextResource(@RequestBody RoleResourceDTO dto){
         roleService.roleContextResource(dto);
-        return new ResponseResult(true,200,"响应成功",null);
+        return new ResponseResultVO(true,200,"响应成功",null);
     }
 }

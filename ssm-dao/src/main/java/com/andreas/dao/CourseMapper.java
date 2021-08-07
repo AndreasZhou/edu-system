@@ -1,11 +1,8 @@
 package com.andreas.dao;
 
+import com.andreas.bo.CourseBO;
 import com.andreas.domain.Course;
-import com.andreas.domain.CoursePageQuery;
 import com.andreas.domain.Teacher;
-import com.andreas.dto.CourseDTO;
-import com.andreas.dto.CoursePageQueryDTO;
-import com.andreas.vo.CourseVO;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -21,7 +18,7 @@ public interface CourseMapper {
      * @Params: dto
      * @Return
      */
-    List<Course> findCourseByCondition(@Param("coursePageQuery") CoursePageQuery coursePageQuery);
+    List<Course> findCourseByCondition(@Param("courseBO") CourseBO courseBO);
 
     /**
      * @Author: andreaszhou
@@ -75,5 +72,5 @@ public interface CourseMapper {
      * @Params: id
      * @Return CourseVO
      */
-    Course findCourseById(@Param("id") Integer id);
+    CourseBO findCourseById(@Param("id") Integer id);
 }
