@@ -2,21 +2,21 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.andreas.dao.UserMapper">
-
-    <select id="findAllUserByPage" resultType="com.andreas.domain.User">
+    <!--查询用户信息，返回所有的用户信息-->
+    <select id="findAllUserByPage" resultType="com.andreas.domain.User" parameterType="com.andreas.bo.UserBO">
         select *
         from USER
         <if test="true">
             and is_del !=1
         </if>
-        <if test="dto.username !=null and dto.username !=''">
-            and name = #{dto.username}
+        <if test="userBO.username !=null and userBO.username !=''">
+            and name = #{userBO.username}
         </if>
-        <if test="dto.startCreateTime != null and dto.endCreateTime != null">
-            and create_time BETWEEN #{dto.startCreateTime} AND #{dto.endCreateTime}
+        <if test="userBO.startCreateTime != null and userBO.endCreateTime != null">
+            and create_time BETWEEN #{userBO.startTime} AND #{userBO.endTime}
         </if>
     </select>
-
+    <!--更新用户状态-->
     <update id="updateUserStatus">
         update user
         <trim prefix="set" suffixOverrides=",">
@@ -25,12 +25,13 @@
             </if>
         </trim>
         <where>
-            <if test="id">
+            <if test="id != null and id != '' ">
                 id = #{id}
             </if>
         </where>
     </update>
-    <select id="login" resultType="com.andreas.vo.UserVO" parameterType="com.andreas.domain.User">
+    <!--查询当前的用户，用来判断用户登录的问题-->
+    <select id="login" resultType="com.andreas.domain.User" parameterType="com.andreas.domain.User">
         select *
         from user
         where phone = #{user.phone}
@@ -43,13 +44,67 @@
                  left join roles r on ur.role_id = r.id
         where u.id = #{id};
     </select>
+    <!--删除用户对应的角色关联的信息-->
     <delete id="deleteUserContextRole">
         delete
         from user_role_relation
         where user_id = #{userId}
     </delete>
-    <insert id="userContextRole">
-        insert into user_role_relation (user_id, role_id, created_time, updated_time, created_by, updated_by)
-        values (#{userId}, #{roleId}, # {createdTime}, #{updatedTime}, #{createdBy}, #{updatedBy})
+    <!--为用户分配角色，得到角色关联的信息-->
+    <!--    <insert id="userContextRole" parameterType="com.andreas.domain.User_Role_relation">-->
+    <!--        insert into user_role_relation (user_id, role_id, created_time, updated_time, created_by, updated_by)-->
+    <!--        values (#{user_role_relation.userId}, #{user_role_relation.roleId}, # {user_role_relation.createdTime},-->
+    <!--                #{user_role_relation.updatedTime}, #{user_role_relation.createdBy}, #{user_role_relation.updatedBy})-->
+    <!--    </insert>-->
+    <insert id="userContextRole" parameterType="com.andreas.domain.User_Role_relation">
+        insert into user_role_relation
+        values (null, #{userId}, #{roleId}, #{createdTime}, #{updatedTime}, #{createdBy}, #{updatedBy})
     </insert>
+    <!-- 根据ID查询用户当前角色 -->
+    <select id="findUserRelationRoleById" resultType="com.andreas.domain.Role"
+            parameterType="java.lang.Integer">
+        SELECT r.id,
+               r.code,
+               r.name,
+               r.description
+        FROM roles r
+                 INNER JOIN user_role_relation ur
+                            ON r.`id` = ur.`role_id`
+                 INNER JOIN USER u ON ur.`user_id` = u.`id`
+        WHERE u.`id` = #{id}
+    </select>
+    <!-- 根据角色id,查询角色拥有的顶级菜单信息 -->
+    <select id="findParentMenuByRoleId" parameterType="java.util.List"
+            resultType="com.andreas.bo.MenuBO">
+        SELECT
+        DISTINCT m.*
+        FROM roles r INNER JOIN role_menu_relation rm ON r.`id` = rm.role_id
+        INNER JOIN menu m ON rm.menu_id = m.id
+        WHERE m.parent_id = -1 AND r.id IN
+        <foreach collection="list" item="item" open="(" separator=","
+                 close=")">
+            #{item}
+        </foreach>
+        GROUP BY m.id
+    </select>
+    <!-- 根据PID 查找子菜单 -->
+    <select id="findSubMenuByPid" resultType="com.andreas.bo.MenuBO">
+        select *
+        from menu
+        where parent_id = #{pid}
+    </select>
+    <!-- 获取用户拥有的资源权限 -->
+    <select id="findResourceByRoleId" parameterType="java.util.List"
+            resultType="com.andreas.domain.Resource">
+        SELECT
+        DISTINCT rc.*
+        FROM roles r INNER JOIN role_resource_relation rrr ON r.`id` =
+        rrr.`role_id`
+        INNER JOIN resource rc ON rrr.`resource_id` = rc.`id` WHERE r.id IN
+        <foreach item="item" index="index" collection="list" open="("
+                 separator="," close=")">
+            #{item}
+        </foreach>
+        GROUP BY rc.id;
+    </select>
 </mapper>

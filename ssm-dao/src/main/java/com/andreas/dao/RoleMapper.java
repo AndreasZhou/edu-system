@@ -1,9 +1,8 @@
 package com.andreas.dao;
 
+import com.andreas.domain.Resource;
 import com.andreas.domain.Role;
 import com.andreas.domain.Role_menu_relation;
-import com.andreas.dto.RoleDTO;
-import com.andreas.dto.Role_menu_relationDTO;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -74,4 +73,13 @@ public interface RoleMapper {
      * @Return
      */
     void deleteRoleContextMenu(@Param("roleId") Integer roleId);
+
+    /**
+     * @Author: andreaszhou
+     * @Description: 根据角色ID查询关联的资源信息ID
+     * @DateTime: 2021/8/8 9:24
+     * @Params: roleId
+     * @Return
+     */
+    List<Resource> findResourceRoleId(Integer roleId);
 }

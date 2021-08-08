@@ -1,5 +1,7 @@
 package com.andreas.dao;
 
+import com.andreas.bo.MenuBO;
+import com.andreas.bo.UserBO;
 import com.andreas.domain.*;
 import com.andreas.dto.UserDTO;
 import com.andreas.vo.UserVO;
@@ -18,7 +20,7 @@ public interface UserMapper {
      * @Params: dto
      * @Return
      */
-    List<User> findAllUserByPage(@Param("dto") UserDTO dto);
+    List<User> findAllUserByPage(@Param("userBO") UserBO userBO);
 
     /**
      * @Author: andreaszhou
@@ -27,7 +29,7 @@ public interface UserMapper {
      * @Params:
      * @Return
      */
-    void updateUserStatus(@Param("id") Integer id, @Param("status") Integer status);
+    void updateUserStatus(@Param("id") Integer id, @Param("status") String status);
 
     /**
      * @Author: andreaszhou
@@ -36,7 +38,7 @@ public interface UserMapper {
      * @Params:
      * @Return
      */
-    UserVO login(@Param("user") User user);
+    User login(@Param("user") User user);
 
     /**
      * @Author: andreaszhou
@@ -49,6 +51,16 @@ public interface UserMapper {
 
     /**
      * @Author: andreaszhou
+     * @Description: 根据用户的id分配对应的角色
+     * @DateTime: 2021/8/1 22:13
+     * @Params:
+     * @Return
+     */
+
+    void userContextRole(User_Role_relation user_role_relation);
+
+    /**
+     * @Author: andreaszhou
      * @Description: 根据用户ID清空中间表的关联关系
      * @DateTime: 2021/8/1 22:27
      * @Params:
@@ -57,28 +69,22 @@ public interface UserMapper {
     void deleteUserContextRole(@Param("userId") Integer userId);
 
     /**
-     * @Author: andreaszhou
-     * @Description: 根据用户的id分配对应的角色
-     * @DateTime: 2021/8/1 22:13
-     * @Params:
-     * @Return
+     * 根据ID查询用户当前角色
      */
-    void userContextRole(User_Role_relation user_role_relation);
+    public List<Role> findUserRelationRoleById(int id);
 
     /**
-     * 根据ID查询用户当前角色
-     * */
-    public List<Role> findUserRelationRoleById(int id);
-    /**
      * 根据角色id,查询角色拥有的顶级菜单信息
-     * */
-    public List<Menu> findParentMenuByRoleId(List<Integer> ids);
+     */
+    public List<MenuBO> findParentMenuByRoleId(List<Integer> ids);
+
     /**
      * 根据PID 查询子菜单信息
-     * */
-    public List<Menu> findSubMenuByPid(int pid);
+     */
+    public List<MenuBO> findSubMenuByPid(int pid);
+
     /**
      * 获取用户拥有的资源权限信息
-     * */
+     */
     public List<Resource> findResourceByRoleId(List<Integer> ids);
 }

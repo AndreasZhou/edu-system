@@ -1,18 +1,16 @@
 package com.andreas.controller;
 
-import com.andreas.vo.ResponseResultVO;
 import com.andreas.dto.RoleDTO;
 import com.andreas.dto.RoleMenuDTO;
 import com.andreas.dto.RoleResourceDTO;
 import com.andreas.service.MenuService;
 import com.andreas.service.RoleService;
 import com.andreas.vo.MenuVO;
+import com.andreas.vo.ResourceVO;
+import com.andreas.vo.ResponseResultVO;
 import com.andreas.vo.RoleVO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -98,10 +96,23 @@ public class RoleController {
      * @Params:
      * @Return
      */
-    @RequestMapping("findMenuByRoleId")
-    public ResponseResultVO findMenuByRoleId(@RequestParam("roleId") Integer roleId) {
+    @RequestMapping("findMenuByRoleId/{roleId}")
+    public ResponseResultVO findMenuByRoleId(@PathVariable Integer roleId) {
         List<Integer> menuByRoleId = roleService.findMenuByRoleId(roleId);
         return new ResponseResultVO(true, 200, "响应成功", menuByRoleId);
+    }
+
+    /**
+     * @Author: andreaszhou
+     * @Description: 根据角色ID查询关联的资源信息ID
+     * @DateTime: 2021/8/8 9:24
+     * @Params:
+     * @Return
+     */
+    @RequestMapping("findResourceByRoleId/{roleId}")
+    public ResponseResultVO findResourceRoleId(@PathVariable Integer roleId) {
+        List<ResourceVO> resourceVOS = roleService.findResourceRoleId(roleId);
+        return new ResponseResultVO(true,200,"响应成功",resourceVOS);
     }
 
     /**
@@ -126,8 +137,8 @@ public class RoleController {
      * @Return
      */
     @RequestMapping("roleContextResource")
-    public ResponseResultVO roleContextResource(@RequestBody RoleResourceDTO dto){
+    public ResponseResultVO roleContextResource(@RequestBody RoleResourceDTO dto) {
         roleService.roleContextResource(dto);
-        return new ResponseResultVO(true,200,"响应成功",null);
+        return new ResponseResultVO(true, 200, "响应成功", null);
     }
 }

@@ -21,7 +21,7 @@ public interface UserService {
      * @Params: dto
      * @Return
      */
-    PageInfo<User> findAllUserByPage(UserDTO dto);
+    PageInfo<UserVO> findAllUserByPage(UserDTO dto);
 
     /**
      * @Author: andreaszhou
@@ -30,7 +30,7 @@ public interface UserService {
      * @Params:
      * @Return
      */
-    void updateUserStatus(Integer id, Integer status);
+    void updateUserStatus(Integer id, String status);
 
     /**
      * @Author: andreaszhou

@@ -3,6 +3,7 @@ package com.andreas.service;
 import com.andreas.dto.RoleDTO;
 import com.andreas.dto.RoleMenuDTO;
 import com.andreas.dto.RoleResourceDTO;
+import com.andreas.vo.ResourceVO;
 import com.andreas.vo.RoleVO;
 
 import java.util.List;
@@ -73,4 +74,13 @@ public interface RoleService {
      * @Return
      */
     void roleContextResource(RoleResourceDTO dto);
+
+    /**
+     * @Author: andreaszhou
+     * @Description: 根据角色ID查询关联的资源信息ID
+     * @DateTime: 2021/8/8 9:24
+     * @Params:
+     * @Return
+     */
+    List<ResourceVO> findResourceRoleId(Integer roleId);
 }

@@ -1,12 +1,14 @@
 package com.andreas.service.impl;
 
 import com.andreas.dao.RoleMapper;
+import com.andreas.domain.Resource;
 import com.andreas.domain.Role;
 import com.andreas.domain.Role_menu_relation;
 import com.andreas.dto.RoleDTO;
 import com.andreas.dto.RoleMenuDTO;
 import com.andreas.dto.RoleResourceDTO;
 import com.andreas.service.RoleService;
+import com.andreas.vo.ResourceVO;
 import com.andreas.vo.RoleVO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -151,5 +153,25 @@ public class RoleServiceImpl implements RoleService {
         // 1.清空中间表的关联关系
 
         // 2.为角色分配资源
+    }
+
+    /**
+     * @Author: andreaszhou
+     * @Description: 根据角色ID查询关联的资源信息ID
+     * @DateTime: 2021/8/8 9:24
+     * @Params: roleId
+     * @Return
+     */
+    @Override
+    public List<ResourceVO> findResourceRoleId(Integer roleId) {
+        List<Resource> resources = roleMapper.findResourceRoleId(roleId);
+        List<ResourceVO> resourceVOS = new ArrayList<>();
+        for (Resource r : resources
+        ) {
+            ResourceVO resourceVO = new ResourceVO();
+            BeanUtils.copyProperties(r, resourceVO);
+            resourceVOS.add(resourceVO);
+        }
+        return resourceVOS;
     }
 }

@@ -1,15 +1,17 @@
 package com.andreas.controller;
 
-import com.andreas.vo.ResponseResultVO;
-import com.andreas.domain.User;
 import com.andreas.dto.UserDTO;
 import com.andreas.dto.UserRoleDTO;
 import com.andreas.service.UserService;
+import com.andreas.vo.ResponseResultVO;
 import com.andreas.vo.RoleVO;
 import com.andreas.vo.UserVO;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -37,7 +39,7 @@ public class UserController {
      */
     @RequestMapping("findAllUserByPage")
     public ResponseResultVO findAllUserByPage(@RequestBody UserDTO dto) {
-        PageInfo<User> userPageInfo = userService.findAllUserByPage(dto);
+        PageInfo<UserVO> userPageInfo = userService.findAllUserByPage(dto);
         return new ResponseResultVO(true, 200, "响应成功", userPageInfo);
     }
 
@@ -49,8 +51,8 @@ public class UserController {
      * @Return
      */
     @RequestMapping("updateUserStatus")
-    public ResponseResultVO updateUserStatus(@RequestParam("id") Integer id, @RequestParam("status") Integer status) {
-        userService.updateUserStatus(id, status);
+    public ResponseResultVO updateUserStatus(@RequestBody UserDTO dto) {
+        userService.updateUserStatus(dto.getId(), dto.getStatus());
         return new ResponseResultVO(true, 200, "修改成功", null);
     }
 
@@ -74,24 +76,24 @@ public class UserController {
             HttpSession session = request.getSession();
             session.setAttribute("access_token", access_token);
             session.setAttribute("user_id", userLogin.getId());
-            responseResultVO = new ResponseResultVO(true, 1, "响应成功", map);
+            responseResultVO = new ResponseResultVO(true, 1, "响应成功，用户登录成功", map);
         } else {
-            responseResultVO = new ResponseResultVO(true, 1, "用户名密码错误", null);
+            responseResultVO = new ResponseResultVO(true, 1, "用户名或密码错误，请重新输入", null);
         }
         return responseResultVO;
     }
 
     /**
      * @Author: andreaszhou
-     * @Description: 分配角色回显
+     * @Description: 分配角色回显 - 根据用户id查找对应的角色的id
      * @DateTime: 2021/8/1 21:43
      * @Params:
      * @Return
      */
     @RequestMapping("findUserRoleById/{id}")
-    public ResponseResultVO findUserRoleById(@PathVariable Integer id){
+    public ResponseResultVO findUserRoleById(@PathVariable Integer id) {
         List<RoleVO> roleVOS = userService.findUserRoleById(id);
-        return new ResponseResultVO(true,200,"响应成功",roleVOS);
+        return new ResponseResultVO(true, 200, "分配角色回显成功", roleVOS);
     }
 
     /**
@@ -102,33 +104,31 @@ public class UserController {
      * @Return
      */
     @RequestMapping("/userContextRole")
-    public ResponseResultVO userContextRole(@RequestBody UserRoleDTO dto){
+    public ResponseResultVO userContextRole(@RequestBody UserRoleDTO dto) {
         userService.userContextRole(dto);
-        return new ResponseResultVO(true,200,"响应成功",null);
+        return new ResponseResultVO(true, 200, "分配角色成功", null);
     }
-    
+
     /**
      * @Author: andreaszhou
-     * @Description: 获取用户权限
+     * @Description: 获取用户权限 -- 菜单权限和资源权限
      * @DateTime: 2021/8/1 23:09
-     * @Params: 
-     * @Return 
+     * @Params:
+     * @Return
      */
     @RequestMapping("getUserPermissions")
-    public ResponseResultVO getUserPermissions(HttpServletRequest request){
+    public ResponseResultVO getUserPermissions(HttpServletRequest request) {
         //获取请求头中的 token
         String token = request.getHeader("Authorization");
         // 从session中获取token
         HttpSession session = request.getSession();
-        String access_token = (String)session.getAttribute("access_token");
+        String access_token = (String) session.getAttribute("access_token");
         //判断
-        if (token.equals(access_token)){
-            int user_id = (Integer)session.getAttribute("user_id");
-            ResponseResultVO result = userService.getUserPermissions(user_id);
-            return result;
-        }else{
-            ResponseResultVO result = new ResponseResultVO(false,400,"获取失败","");
-            return result;
+        if (token.equals(access_token)) {
+            int user_id = (Integer) session.getAttribute("user_id");
+            return userService.getUserPermissions(user_id);
+        } else {
+            return new ResponseResultVO(false, 400, "获取失败", "");
         }
     }
 }

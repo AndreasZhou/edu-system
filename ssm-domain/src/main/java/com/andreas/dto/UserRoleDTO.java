@@ -19,10 +19,10 @@ public class UserRoleDTO {
     private String username;
     // 注册起始时间 2020/11/11 2020-08-04
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date startCreateTime;
+    private Date startTime;
     // 注册结束时间
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date endCreateTime;
+    private Date endTime;
     // 角色id列表
     private List<Integer> roleIdList;
     // 用户id

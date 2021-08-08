@@ -77,4 +77,12 @@
         WHERE r.id = #{roleId};
     </select>
 
+    <!--根据角色id查询到对应的资源信息-->
+    <select id="findResourceRoleId" parameterType="java.lang.Integer" resultType="com.andreas.domain.Resource">
+        SELECT r.id
+        FROM roles rs
+                 INNER JOIN role_resource_relation rr ON rs.id = rr.role_id
+                 INNER JOIN resource r ON rr.resource_id = r.id
+        WHERE role_id = #{roleId};
+    </select>
 </mapper>
