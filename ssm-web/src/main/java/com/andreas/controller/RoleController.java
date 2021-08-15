@@ -112,7 +112,7 @@ public class RoleController {
     @RequestMapping("findResourceByRoleId/{roleId}")
     public ResponseResultVO findResourceRoleId(@PathVariable Integer roleId) {
         List<ResourceVO> resourceVOS = roleService.findResourceRoleId(roleId);
-        return new ResponseResultVO(true,200,"响应成功",resourceVOS);
+        return new ResponseResultVO(true, 200, "响应成功", resourceVOS);
     }
 
     /**
