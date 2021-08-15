@@ -11,11 +11,14 @@
        	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
 
     <!--spring整合mybatis-->
+
+    <!--1.扫描包-->
+    <context:component-scan base-package="com.andreas.dao"/>
         <!--引入jdbc.properties-->
-    <context:property-placeholder location="classpath:jdbc.properties"></context:property-placeholder>
+    <context:property-placeholder location="classpath:jdbc.properties"/>
 
 
-     <!--1.数据源配置-->
+     <!--2.数据源配置-->
     <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource">
         <property name="driverClassName" value="${jdbc.driver}"></property>
         <property name="url" value="${jdbc.url}"></property>
@@ -40,8 +43,13 @@
         <!--引入加载mybatis核心配置文件-->
         <property name="configLocation" value="classpath:sqlMapConfig.xml"></property>
      </bean>
-
-     <!--3.mapper映射扫描-->
+    <!--4.事务管理器-->
+    <bean id="dataSourceTransactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+    <!--5.开启事务-->
+    <tx:annotation-driven/>
+     <!--6.mapper映射扫描-->
     <bean  class="org.mybatis.spring.mapper.MapperScannerConfigurer">
         <property name="basePackage"  value="com.andreas.dao"/>
     </bean>
